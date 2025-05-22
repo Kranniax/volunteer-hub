@@ -1,0 +1,38 @@
+{
+  "name": "volunteer-hub",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A platform designed to bridge the gap between organizations needing help and individuals wanting to contribute to their communities.",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js",
+    "seed": "node db/seeds/seed.js",
+    "dev": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kranniax/volunteer-hub.git"
+  },
+  "author": "Shane Bramble-Wade",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kranniax/volunteer-hub/issues"
+  },
+  "homepage": "https://github.com/Kranniax/volunteer-hub#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-session-sequelize": "^7.1.7",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.1",
+    "express-session": "^1.18.1",
+    "mysql2": "^3.14.1",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
+    "npm-check-updates": "^18.0.1"
+  }
+}
