@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { sequelize } from "./config/connections.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,6 +16,8 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files from 'public' directory
 
-app.listen(PORT, () => {
-  console.log("App is listening...");
+sequelize.sync({ force: true }).then(() => {
+  app.listen(PORT, () => {
+    console.log(`App is listening on port ${PORT}`);
+  });
 });
