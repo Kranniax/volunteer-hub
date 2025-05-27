@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes, Model } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 // Import the sequelize instance from your config file
 import { sequelize } from "../config/connections.js";
 
