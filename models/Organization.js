@@ -16,6 +16,10 @@ Organization.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     // Email address (required, must be unique and valid format)
     email: {
       type: DataTypes.STRING,
@@ -32,6 +36,14 @@ Organization.init(
       validate: {
         len: [4], // Password must be at least 4 characters
       },
+    },
+    contactPhone: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    location: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {

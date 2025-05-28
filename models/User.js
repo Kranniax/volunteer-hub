@@ -3,10 +3,10 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/connections.js";
 
 // Define the Volunteer model by extending Sequelize's Model class
-class Volunteer extends Model {}
+class User extends Model {}
 
 // Initialize the Volunteer model with its schema and options
-Volunteer.init(
+User.init(
   {
     // Primary key: unique ID for each volunteer, auto-incremented
     id: {
@@ -42,6 +42,14 @@ Volunteer.init(
         len: [4], // Password must be at least 4 characters
       },
     },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    phoneNumber: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize, // Pass the sequelize instance
@@ -52,9 +60,9 @@ Volunteer.init(
     // Use underscores instead of camel-casing for column names
     underscored: true,
     // Set the model name
-    modelName: "volunteer",
+    modelName: "user",
   }
 );
 
 // Export the Volunteer model for use in other files
-export { Volunteer };
+export { User };
