@@ -5,24 +5,14 @@ import { sequelize } from "../config/connections.js";
 // Define the Volunteer model by extending Sequelize's Model class
 class User extends Model {}
 
-// Initialize the Volunteer model with its schema and options
+// Initialize the User model with its schema and options
 User.init(
   {
-    // Primary key: unique ID for each volunteer, auto-incremented
+    // Primary key: unique ID for each user, auto-incremented
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false,
-    },
-    // First name of the volunteer (required)
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    // Last name of the volunteer (required)
-    lastName: {
-      type: DataTypes.STRING,
       allowNull: false,
     },
     // Email address (required, must be unique and valid format)
@@ -43,18 +33,14 @@ User.init(
       },
     },
     role: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    phoneNumber: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.ENUM("volunteer", "organization", "admin"),
       allowNull: false,
     },
   },
   {
     sequelize, // Pass the sequelize instance
     // Don't automatically create createdAt/updatedAt timestamp fields
-    timestamps: false,
+    timestamps: true,
     // Don't pluralize the name of the database table
     freezeTableName: true,
     // Use underscores instead of camel-casing for column names

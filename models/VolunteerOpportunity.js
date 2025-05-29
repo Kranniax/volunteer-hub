@@ -1,5 +1,10 @@
 import { DataTypes, Model } from "sequelize";
 
+/*
+VolunteerOpportunity is focused on long-term or ongoing roles, such as tutoring, 
+mentorship, or administrative assistance. These opportunities might not have a 
+fixed date and time—they could be recurring or flexible engagements.
+*/
 class VolunteerOpportunity extends Model {}
 
 // Initialize the VolunteerOpportunity model with its schema
@@ -30,6 +35,26 @@ VolunteerOpportunity.init(
     // Date of the opportunity (stored as string)
     date: {
       type: DataTypes.DATE,
+      allowNull: false,
+    },
+    // The start time of the volunteer opportunity
+    startTime: {
+      type: DataTypes.TIME,
+      allowNull: false,
+    },
+    // The end time of the volunteer opportunity
+    endTime: {
+      type: DataTypes.TIME,
+      allowNull: false,
+    },
+    // The current available open spots. 
+    spotsAvailable: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    // The number of spots being full.
+    spotsFilledCount: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     // Status of the opportunity (e.g., open, closed)
