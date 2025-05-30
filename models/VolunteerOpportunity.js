@@ -1,4 +1,5 @@
 import { DataTypes, Model } from "sequelize";
+// import { Organization } from "./Organization";
 
 /*
 VolunteerOpportunity is focused on long-term or ongoing roles, such as tutoring, 
@@ -16,6 +17,12 @@ VolunteerOpportunity.init(
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
+    },
+    organization_id: {
+      references: {
+        model: "organization",
+        key: "id",
+      },
     },
     // Title of the volunteer opportunity
     title: {
@@ -47,7 +54,7 @@ VolunteerOpportunity.init(
       type: DataTypes.TIME,
       allowNull: false,
     },
-    // The current available open spots. 
+    // The current available open spots.
     spotsAvailable: {
       type: DataTypes.INTEGER,
       allowNull: false,
