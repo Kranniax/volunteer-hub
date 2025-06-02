@@ -84,7 +84,16 @@ router.put("/:id", async (req, res) => {
     }
 
     const updatedUser = await User.findByPk(req.params.id, {
-      include: [Volunteer, Organization],
+      include: [
+        {
+          model: Volunteer,
+          as: "volunteerProfile",
+        },
+        {
+          model: Organization,
+          as: "organizationProfile",
+        },
+      ],
     });
     res.status(200).json(updatedUser);
   } catch (err) {
