@@ -1,5 +1,6 @@
 // Import necessary classes from sequelize
 import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../config/connections.js";
 
 // Define the Organization model by extending Sequelize's Model class
 class Organization extends Model {}

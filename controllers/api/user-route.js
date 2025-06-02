@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Organization, User, Volunteer } from "../../models";
+import { Organization, User, Volunteer } from "../../models/index.js";
 
 const router = Router();
 
@@ -7,7 +7,16 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     const dbUserData = await User.findAll({
-      include: [Volunteer, Organization],
+      include: [
+        {
+          model: Volunteer,
+          as: "volunteerProfile",
+        },
+        {
+          model: Organization,
+          as: "organizationProfile",
+        },
+      ],
     });
     res.status(200).json(dbUserData);
   } catch (err) {
@@ -17,10 +26,90 @@ router.get("/", async (req, res) => {
 });
 
 // Get a single user.
-router.get("/:id", (req, res) => {});
+router.get("/:id", async (req, res) => {
+  try {
+    const dbSingleUserData = await User.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: [
+        {
+          model: Volunteer,
+          as: "volunteerProfile",
+        },
+        {
+          model: Organization,
+          as: "organizationProfile",
+        },
+      ],
+    });
+    if (!dbSingleUserData) {
+      res.status(404).json({ message: "Cannot locate user with this id." });
+      return;
+    }
+    res.status(200).json(dbSingleUserData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+});
 
 // Create a new user
+router.post("/", async (req, res) => {
+  try {
+    const newUserData = await User.create({
+      email: req.body.email,
+      password: req.body.password,
+      role: req.body.role,
+    });
 
+    res.status(200).json(newUserData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+});
 // Update a user
+router.put("/:id", async (req, res) => {
+  try {
+    // The update request return an array with the number of affected rows.
+    const updatedUserData = await User.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!updatedUserData) {
+      res.status(404).json({ message: "Cannot locate user with this id." });
+      return;
+    }
 
+    const updatedUser = await User.findByPk(req.params.id, {
+      include: [Volunteer, Organization],
+    });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+});
 // Delete a user
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedUserData = await User.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!deletedUserData) {
+      res.status(404).json({ message: "Cannot locate user with this id." });
+      return;
+    }
+
+    res.status(200).json(deletedUserData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+});
+
+export default router;

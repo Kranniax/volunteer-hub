@@ -1,7 +1,7 @@
 // Import necessary classes from sequelize
 import { DataTypes, Model } from "sequelize";
 // Import the sequelize instance from your config file
-import { sequelize } from "../config/connections";
+import { sequelize } from "../config/connections.js";
 
 // Define the Volunteer model by extending Sequelize's Model class
 class Volunteer extends Model {}

@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { sequelize } from "./config/connections.js";
+import controller from "./controllers/index.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,6 +16,9 @@ const __dirname = dirname(__filename);
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files from 'public' directory
+
+// Use the api routes
+app.use(controller);
 
 sequelize.sync({ force: true }).then(() => {
   app.listen(PORT, () => {
