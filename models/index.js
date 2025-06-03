@@ -31,4 +31,13 @@ VolunteerOpportunity.belongsTo(Organization, {
   as: "organization",
 });
 
+// Organization.hasMany(Volunteer, {
+//   foreignKey: "organization_id",
+//   as: "opportunities",
+// });
+// Volunteer.belongsTo(Organization, {
+//   foreignKey: "organization_id",
+//   as: "organizationProfile",
+// });
+
 export { User, Volunteer, Organization, VolunteerOpportunity };
