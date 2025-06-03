@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, "public"))); // Serve static files f
 // Use the api routes
 app.use(controller);
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`);
   });
