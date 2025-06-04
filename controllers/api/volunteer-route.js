@@ -11,18 +11,7 @@ const router = Router();
 // Get volunteers
 router.get("/", async (req, res) => {
   try {
-    const dbVolunteerData = await Volunteer.findAll({
-      include: [
-        {
-          model: Organization,
-          as: "organizationProfile",
-          include: {
-            model: VolunteerOpportunity,
-            as: "opportunities",
-          },
-        },
-      ],
-    });
+    const dbVolunteerData = await Volunteer.findAll({});
     // Return query data from database.
     res.status(200).json(dbVolunteerData);
   } catch (err) {
@@ -33,7 +22,16 @@ router.get("/", async (req, res) => {
 // Get a single volunteer
 router.get("/:id", async (req, res) => {
   try {
-    // TODO: Add logic to get a single volunteer by id
+    const dbSingleVolunteerData = await Volunteer.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!dbSingleVolunteerData) {
+      res.status(404).json({ message: "Cannot locate volunteer with this id" });
+      return;
+    }
+    res.status(200).json(dbSingleVolunteerData);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -42,7 +40,9 @@ router.get("/:id", async (req, res) => {
 // Create a volunteer
 router.post("/", async (req, res) => {
   try {
-    // TODO: Add logic to create a new volunteer
+    const newVolunteerData = await Volunteer.create(req.body);
+
+    res.status(200).json(newVolunteerData);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -51,7 +51,18 @@ router.post("/", async (req, res) => {
 // Update a volunteer
 router.put("/:id", async (req, res) => {
   try {
-    // TODO: Add logic to update a volunteer by id
+    const updateVolunteerData = await Volunteer.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!updateVolunteerData) {
+      res.status(404).json({ message: "Cannot locate user with this id." });
+      return;
+    }
+
+    const updatedVolunteer = await Volunteer.findByPk(req.params.id);
+    res.status(200).json(updatedVolunteer);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -60,8 +71,21 @@ router.put("/:id", async (req, res) => {
 // Delete a volunteer
 router.delete("/:id", async (req, res) => {
   try {
-    // TODO: Add logic to delete a volunteer by id
+    const deletedVolunteerData = await Volunteer.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!deletedVolunteerData) {
+      res
+        .status(404)
+        .json({ message: "Cannot locate volunteer with this id." });
+      return;
+    }
+    res.status(200).json({ message: "Volunteer deleted successfully." });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
+export default router;
