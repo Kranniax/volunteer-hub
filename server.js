@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { sequelize } from "./config/connections.js";
 import controller from "./controllers/index.js";
+import { tr } from "@faker-js/faker";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
