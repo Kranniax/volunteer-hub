@@ -27,6 +27,14 @@ VolunteerOpportunity.init(
         key: "id",
       },
     },
+    volunteer_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "volunteer",
+        key: "id",
+      },
+    },
     // Title of the volunteer opportunity
     title: {
       type: DataTypes.STRING,

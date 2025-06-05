@@ -31,13 +31,19 @@ VolunteerOpportunity.belongsTo(Organization, {
   as: "organization",
 });
 
-// Organization.hasMany(Volunteer, {
-//   foreignKey: "organization_id",
-//   as: "opportunities",
-// });
-// Volunteer.belongsTo(Organization, {
-//   foreignKey: "organization_id",
-//   as: "organizationProfile",
-// });
+// Many to many relationship.
+Volunteer.belongsToMany(Organization, {
+  through: VolunteerOpportunity,
+  foreignKey: "volunteer_id",
+  otherKey: "organization_id",
+  as: "recentOrganizations",
+});
+Organization.belongsToMany(Volunteer, {
+  through: VolunteerOpportunity,
+  foreignKey: "organization_id",
+  otherKey: "volunteer_id",
+  as: "volunteers",
+});
+
 
 export { User, Volunteer, Organization, VolunteerOpportunity };
