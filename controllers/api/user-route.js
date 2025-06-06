@@ -6,18 +6,7 @@ const router = Router();
 // Get all users.
 router.get("/", async (req, res) => {
   try {
-    const dbUserData = await User.findAll({
-      include: [
-        {
-          model: Volunteer,
-          as: "volunteerProfile",
-        },
-        {
-          model: Organization,
-          as: "organizationProfile",
-        },
-      ],
-    });
+    const dbUserData = await User.findAll();
     res.status(200).json(dbUserData);
   } catch (err) {
     console.error(err);
@@ -32,16 +21,6 @@ router.get("/:id", async (req, res) => {
       where: {
         id: req.params.id,
       },
-      include: [
-        {
-          model: Volunteer,
-          as: "volunteerProfile",
-        },
-        {
-          model: Organization,
-          as: "organizationProfile",
-        },
-      ],
     });
     if (!dbSingleUserData) {
       res.status(404).json({ message: "Cannot locate user with this id." });
@@ -73,7 +52,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     // The update request return an array with the number of affected rows.
-    const updatedUserData = await User.update(req.body, {
+    const [updatedUserData] = await User.update(req.body, {
       where: {
         id: req.params.id,
       },
@@ -83,18 +62,7 @@ router.put("/:id", async (req, res) => {
       return;
     }
 
-    const updatedUser = await User.findByPk(req.params.id, {
-      include: [
-        {
-          model: Volunteer,
-          as: "volunteerProfile",
-        },
-        {
-          model: Organization,
-          as: "organizationProfile",
-        },
-      ],
-    });
+    const updatedUser = await User.findByPk(req.params.id);
     res.status(200).json(updatedUser);
   } catch (err) {
     console.log(err);
@@ -114,7 +82,7 @@ router.delete("/:id", async (req, res) => {
       return;
     }
 
-    res.status(200).json(deletedUserData);
+    res.status(200).json({ message: "User deleted successfully." });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });
