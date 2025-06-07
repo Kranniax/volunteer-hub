@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
       role: req.body.role,
     });
 
-    res.status(200).json(newUserData);
+    res.status(201).json(newUserData);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });

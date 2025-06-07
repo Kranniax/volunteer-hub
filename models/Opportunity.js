@@ -7,10 +7,10 @@ VolunteerOpportunity is focused on long-term or ongoing roles, such as tutoring,
 mentorship, or administrative assistance. These opportunities might not have a 
 fixed date and time—they could be recurring or flexible engagements.
 */
-class VolunteerOpportunity extends Model {}
+class Opportunity extends Model {}
 
 // Initialize the VolunteerOpportunity model with its schema
-VolunteerOpportunity.init(
+Opportunity.init(
   {
     // Primary key: unique ID for each opportunity
     id: {
@@ -79,8 +79,8 @@ VolunteerOpportunity.init(
     timestamps: true,
     freezeTableName: true,
     underscored: true,
-    modelName: "volunteer_opportunity",
+    modelName: "opportunity",
   }
 );
 
-export { VolunteerOpportunity };
+export { Opportunity };

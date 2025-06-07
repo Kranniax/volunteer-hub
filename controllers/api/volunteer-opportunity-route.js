@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { VolunteerOpportunity } from '../../models';
+import { Opportunity } from '../../models/index.js';
 
 const router = Router();
 
 // GET all volunteer opportunities
 router.get('/', async (req, res) => {
     try {
-        const opportunities = await VolunteerOpportunity.findAll();
+        const opportunities = await Opportunity.findAll();
         res.json(opportunities);
     } catch (err) {
         res.status(500).json({ error: 'Failed to get opportunities' });
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 // GET a single volunteer opportunity by id
 router.get('/:id', async (req, res) => {
     try {
-        const opportunity = await VolunteerOpportunity.findByPk(req.params.id);
+        const opportunity = await Opportunity.findByPk(req.params.id);
         if (!opportunity) {
             return res.status(404).json({ error: 'Opportunity not found' });
         }
@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
 // CREATE a new volunteer opportunity
 router.post('/', async (req, res) => {
     try {
-        const newOpportunity = await VolunteerOpportunity.create(req.body);
+        const newOpportunity = await Opportunity.create(req.body);
         res.status(201).json(newOpportunity);
     } catch (err) {
         res.status(400).json({ error: 'Failed to create opportunity' });
@@ -39,13 +39,13 @@ router.post('/', async (req, res) => {
 // UPDATE a volunteer opportunity
 router.put('/:id', async (req, res) => {
     try {
-        const [updated] = await VolunteerOpportunity.update(req.body, {
+        const [updated] = await Opportunity.update(req.body, {
             where: { id: req.params.id }
         });
         if (!updated) {
             return res.status(404).json({ error: 'Opportunity not found' });
         }
-        const updatedOpportunity = await VolunteerOpportunity.findByPk(req.params.id);
+        const updatedOpportunity = await Opportunity.findByPk(req.params.id);
         res.json(updatedOpportunity);
     } catch (err) {
         res.status(400).json({ error: 'Failed to update opportunity' });
@@ -55,7 +55,7 @@ router.put('/:id', async (req, res) => {
 // DELETE a volunteer opportunity
 router.delete('/:id', async (req, res) => {
     try {
-        const deleted = await VolunteerOpportunity.destroy({
+        const deleted = await Opportunity.destroy({
             where: { id: req.params.id }
         });
         if (!deleted) {

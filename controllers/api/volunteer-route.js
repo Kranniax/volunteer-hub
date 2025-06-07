@@ -1,10 +1,6 @@
 import { Router } from "express";
 import { sequelize } from "../../config/connections.js";
-import {
-  Volunteer,
-  Organization,
-  VolunteerOpportunity,
-} from "../../models/index.js";
+import { Volunteer, Organization, Opportunity, Signup } from "../../models/index.js";
 
 const router = Router();
 
@@ -26,6 +22,18 @@ router.get("/:id", async (req, res) => {
       where: {
         id: req.params.id,
       },
+      include: [
+        {
+          model: Opportunity,
+          through: Signup, // hides join table fields if you want
+          include: [
+            {
+              model: Organization,
+              as: "organization", // use the alias from your association
+            },
+          ],
+        },
+      ],
     });
     if (!dbSingleVolunteerData) {
       res.status(404).json({ message: "Cannot locate volunteer with this id" });
@@ -42,7 +50,7 @@ router.post("/", async (req, res) => {
   try {
     const newVolunteerData = await Volunteer.create(req.body);
 
-    res.status(200).json(newVolunteerData);
+    res.status(201).json(newVolunteerData);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

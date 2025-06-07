@@ -2,8 +2,8 @@
 import { User } from "./User.js";
 import { Volunteer } from "./Volunteer.js";
 import { Organization } from "./Organization.js";
-import { VolunteerOpportunity } from "./VolunteerOpportunity.js";
-import { VolunteerOpportunitySignups } from "./VolunteerOpportunitySignups.js";
+import { Opportunity } from "./Opportunity.js";
+import { Signup } from "./Signup.js";
 
 // Set up model associations
 
@@ -30,25 +30,25 @@ Organization.belongsTo(User, {
 });
 
 // Organization has many VolunteerOpportunities (1:M)
-Organization.hasMany(VolunteerOpportunity, {
+Organization.hasMany(Opportunity, {
   foreignKey: "organization_id",
   as: "opportunities",
 });
 // VolunteerOpportunity belongs to Organization (M:1)
-VolunteerOpportunity.belongsTo(Organization, {
+Opportunity.belongsTo(Organization, {
   foreignKey: "organization_id",
   as: "organization",
 });
 
 // Volunteer <-> VolunteerOpportunity many-to-many relationship through VolunteerOpportunitySignups
-Volunteer.belongsToMany(VolunteerOpportunity, {
-  through: VolunteerOpportunitySignups, // Join table
+Volunteer.belongsToMany(Opportunity, {
+  through: Signup, // Join table
   foreignKey: "volunteer_id",
-  otherKey: "volunteer_opportunity_id",
+  otherKey: "opportunity_id",
 });
 
-VolunteerOpportunity.belongsToMany(Volunteer, {
-  through: VolunteerOpportunitySignups, // Join table
+Opportunity.belongsToMany(Volunteer, {
+  through: Signup, // Join table
   foreignKey: "volunteer_opportunity_id",
   otherKey: "volunteer_id",
 });
@@ -58,6 +58,6 @@ export {
   User,
   Volunteer,
   Organization,
-  VolunteerOpportunity,
-  VolunteerOpportunitySignups,
+  Opportunity,
+  Signup,
 };

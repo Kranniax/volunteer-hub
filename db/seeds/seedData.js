@@ -1,7 +1,9 @@
 import { faker } from "@faker-js/faker";
+import { or } from "sequelize";
 
-const volunteerTestUsers = 50;
+const volunteerCount = 50;
 const userCount = 100;
+const organizationCount = 25;
 
 // Create random users.
 function createRandomUsers(count) {
@@ -54,6 +56,32 @@ function createRandomVolunteers(count) {
   }
   return randomVolunteers;
 }
-const volunteers = createRandomVolunteers(volunteerTestUsers);
+const volunteers = createRandomVolunteers(volunteerCount);
 
-export { randomUsers, volunteers };
+// create random organizations.
+function createRandomOrganizations(count) {
+  var randomOrganizationsArr = [];
+
+  for (var i = 0; i < count; i++) {
+    var organization = {
+      user_id: i + 1,
+      name: faker.company.name(),
+      description: faker.company.catchPhrase(),
+      mission: faker.company.catchPhraseDescriptor(),
+      phone: faker.phone.number({ style: "national" }),
+      website: faker.internet.url(),
+      address: faker.location.streetAddress(),
+      latitude: faker.location.latitude(),
+      longitude: faker.location.longitude(),
+      contactPerson: faker.person.fullName(),
+      logoImage: faker.image.url(),
+      isVerified: faker.datatype.boolean({ probability: 0.8 }),
+    };
+
+    randomOrganizationsArr.push(organization);
+  }
+  return randomOrganizationsArr;
+}
+const organizations = createRandomOrganizations(organizationCount);
+
+export { randomUsers, volunteers, organizations };
