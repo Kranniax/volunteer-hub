@@ -17,9 +17,9 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const organization = await Organization.findByPk(req.params.id, {
-    //   include: {
-    //     model: Opportunity,
-    //   },
+      include: {
+        model: Opportunity,
+      },
     });
     if (!organization) {
       return res.status(404).json({ error: "Organization not found" });
