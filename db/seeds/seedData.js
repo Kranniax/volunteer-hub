@@ -1,20 +1,34 @@
 import { faker } from "@faker-js/faker";
-import { or } from "sequelize";
 
-const volunteerCount = 50;
 const userCount = 100;
-const organizationCount = 25;
+const volunteerArr = [];
+const organizationArr = [];
+const adminArr = [];
+const VolunteerOpportunityCount = 100;
 
 // Create random users.
 function createRandomUsers(count) {
   const roles = ["admin", "organization", "volunteer"];
   const users = [];
   for (let i = 0; i < count; i++) {
-    users.push({
+    var userID = i + 1;
+    const user = {
       email: faker.internet.email(),
       password: faker.internet.password({ length: 10 }),
       role: roles[Math.floor(Math.random() * roles.length)],
-    });
+    };
+    switch (user.role) {
+      case "volunteer":
+        volunteerArr.push(userID);
+        break;
+      case "organization":
+        organizationArr.push(userID);
+        break;
+      default:
+        adminArr.push(userID);
+        break;
+    }
+    users.push(user);
   }
   return users;
 }
@@ -34,7 +48,7 @@ function createRandomVolunteers(count) {
 
   for (var i = 0; i < count; i++) {
     var volunteer = {
-      user_id: i + 1,
+      user_id: volunteerArr[i],
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       phone: faker.phone.number({ style: "national" }),
@@ -56,7 +70,7 @@ function createRandomVolunteers(count) {
   }
   return randomVolunteers;
 }
-const volunteers = createRandomVolunteers(volunteerCount);
+const volunteers = createRandomVolunteers(volunteerArr.length);
 
 // create random organizations.
 function createRandomOrganizations(count) {
@@ -64,7 +78,7 @@ function createRandomOrganizations(count) {
 
   for (var i = 0; i < count; i++) {
     var organization = {
-      user_id: i + 1,
+      user_id: organizationArr[i],
       name: faker.company.name(),
       description: faker.company.catchPhrase(),
       mission: faker.company.catchPhraseDescriptor(),
@@ -82,6 +96,32 @@ function createRandomOrganizations(count) {
   }
   return randomOrganizationsArr;
 }
-const organizations = createRandomOrganizations(organizationCount);
+const organizations = createRandomOrganizations(organizationArr.length);
 
-export { randomUsers, volunteers, organizations };
+// create random volunteer opportunities.
+function createRandomVolunteerOpportunities(count) {
+  const statuses = ["open", "closed", "pending"];
+  const opportunities = [];
+  for (let i = 0; i < count; i++) {
+    const opportunity = {
+      organization_id:
+        organizationArr[Math.floor(Math.random() * organizationArr.length)], // Distribute among organizations
+      title: faker.company.catchPhrase(),
+      description: faker.lorem.paragraph(),
+      requirements: faker.lorem.sentence(),
+      date: faker.date.future(),
+      startTime: faker.date.future().toTimeString().slice(0, 8),
+      endTime: faker.date.future().toTimeString().slice(0, 8),
+      spotsAvailable: faker.number.int({ min: 1, max: 20 }),
+      spotsFilledCount: faker.number.int({ min: 0, max: 20 }),
+      status: statuses[Math.floor(Math.random() * statuses.length)],
+    };
+    opportunities.push(opportunity);
+  }
+  return opportunities;
+}
+const volunteerOpportunities = createRandomVolunteerOpportunities(
+  VolunteerOpportunityCount
+);
+
+export { randomUsers, volunteers, organizations, volunteerOpportunities };

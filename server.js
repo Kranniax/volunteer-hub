@@ -4,7 +4,6 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { sequelize } from "./config/connections.js";
 import controller from "./controllers/index.js";
-import { tr } from "@faker-js/faker";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -21,7 +20,7 @@ app.use(express.static(path.join(__dirname, "public"))); // Serve static files f
 // Use the api routes
 app.use(controller);
 
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
   app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`);
   });

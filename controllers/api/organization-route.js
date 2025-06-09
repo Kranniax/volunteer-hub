@@ -19,6 +19,7 @@ router.get("/:id", async (req, res) => {
     const organization = await Organization.findByPk(req.params.id, {
       include: {
         model: Opportunity,
+        as: "opportunities",
       },
     });
     if (!organization) {
