@@ -5,6 +5,7 @@ const volunteerArr = [];
 const organizationArr = [];
 const adminArr = [];
 const VolunteerOpportunityCount = 100;
+// const signUpCount = 100;
 
 // Create random users.
 function createRandomUsers(count) {
@@ -104,8 +105,7 @@ function createRandomVolunteerOpportunities(count) {
   const opportunities = [];
   for (let i = 0; i < count; i++) {
     const opportunity = {
-      organization_id:
-        organizationArr[Math.floor(Math.random() * organizationArr.length)], // Distribute among organizations
+      organization_id: Math.floor(Math.random() * organizationArr.length) + 1, // This assumes organizations will have IDs 1, 2, 3, etc.
       title: faker.company.catchPhrase(),
       description: faker.lorem.paragraph(),
       requirements: faker.lorem.sentence(),
@@ -123,5 +123,19 @@ function createRandomVolunteerOpportunities(count) {
 const volunteerOpportunities = createRandomVolunteerOpportunities(
   VolunteerOpportunityCount
 );
+
+// function createRandomVolunteerSignUps(count) {
+//   const signUps = [];
+//   for (var i = 0; i < count; i++) {
+//     signUps.push({
+//       opportunity_id:
+//         Math.floor(Math.random() * VolunteerOpportunityCount) + 1,
+//       volunteer_id: Math.floor(Math.random() * volunteerArr.length) + 1,
+//     });
+//   }
+//   return signUps;
+// }
+
+// const volunteerSignups = createRandomVolunteerSignUps(signUpCount);
 
 export { randomUsers, volunteers, organizations, volunteerOpportunities };
