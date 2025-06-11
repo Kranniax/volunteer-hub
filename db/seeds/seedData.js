@@ -1,42 +1,26 @@
 import { faker } from "@faker-js/faker";
 
 const userCount = 100;
-const volunteerArr = [];
-const organizationArr = [];
-const adminArr = [];
-const VolunteerOpportunityCount = 100;
-// const signUpCount = 100;
+const opportunityCount = 50;
+const signUpCount = 100;
 
 // Create random users.
 function createRandomUsers(count) {
   const roles = ["admin", "organization", "volunteer"];
   const users = [];
-  for (let i = 0; i < count; i++) {
-    var userID = i + 1;
-    const user = {
+  for (var i = 0; i < count; i++) {
+    users.push({
       email: faker.internet.email(),
-      password: faker.internet.password({ length: 10 }),
+      password: faker.internet.password({ length: 15 }),
       role: roles[Math.floor(Math.random() * roles.length)],
-    };
-    switch (user.role) {
-      case "volunteer":
-        volunteerArr.push(userID);
-        break;
-      case "organization":
-        organizationArr.push(userID);
-        break;
-      default:
-        adminArr.push(userID);
-        break;
-    }
-    users.push(user);
+    });
   }
   return users;
 }
 const randomUsers = createRandomUsers(userCount);
 
 // Create random volunteers.
-function createRandomVolunteers(count) {
+var createRandomVolunteers = function (volunteerArr) {
   var randomVolunteers = [];
   var relationships = [
     "parent",
@@ -47,9 +31,9 @@ function createRandomVolunteers(count) {
     "grandchild",
   ];
 
-  for (var i = 0; i < count; i++) {
+  for (var i = 0; i < volunteerArr.length; i++) {
     var volunteer = {
-      user_id: volunteerArr[i],
+      user_id: volunteerArr[i].id,
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       phone: faker.phone.number({ style: "national" }),
@@ -70,16 +54,15 @@ function createRandomVolunteers(count) {
     randomVolunteers.push(volunteer);
   }
   return randomVolunteers;
-}
-const volunteers = createRandomVolunteers(volunteerArr.length);
+};
 
 // create random organizations.
-function createRandomOrganizations(count) {
+var createRandomOrganizations = function (organizationArr) {
   var randomOrganizationsArr = [];
 
-  for (var i = 0; i < count; i++) {
+  for (var i = 0; i < organizationArr.length; i++) {
     var organization = {
-      user_id: organizationArr[i],
+      user_id: organizationArr[i].id,
       name: faker.company.name(),
       description: faker.company.catchPhrase(),
       mission: faker.company.catchPhraseDescriptor(),
@@ -96,16 +79,16 @@ function createRandomOrganizations(count) {
     randomOrganizationsArr.push(organization);
   }
   return randomOrganizationsArr;
-}
-const organizations = createRandomOrganizations(organizationArr.length);
+};
 
 // create random volunteer opportunities.
-function createRandomVolunteerOpportunities(count) {
+var createRandomVolunteerOpportunities = function (organizationArr) {
   const statuses = ["open", "closed", "pending"];
   const opportunities = [];
-  for (let i = 0; i < count; i++) {
-    const opportunity = {
-      organization_id: Math.floor(Math.random() * organizationArr.length) + 1, // This assumes organizations will have IDs 1, 2, 3, etc.
+  for (let i = 0; i < opportunityCount; i++) {
+    opportunities.push({
+      // Use a valid organization_id from organizationArr (which is an array of user IDs for organizations)
+      organization_id: organizationArr[Math.floor(Math.random() * organizationArr.length)],
       title: faker.company.catchPhrase(),
       description: faker.lorem.paragraph(),
       requirements: faker.lorem.sentence(),
@@ -115,27 +98,29 @@ function createRandomVolunteerOpportunities(count) {
       spotsAvailable: faker.number.int({ min: 1, max: 20 }),
       spotsFilledCount: faker.number.int({ min: 0, max: 20 }),
       status: statuses[Math.floor(Math.random() * statuses.length)],
-    };
-    opportunities.push(opportunity);
+    });
   }
   return opportunities;
+};
+
+/*
+function createRandomVolunteerSignUps(count) {
+  const signUps = [];
+  for (var i = 0; i < count; i++) {
+    signUps.push({
+      opportunity_id: Math.floor(Math.random() * VolunteerOpportunityCount) + 1,
+      volunteer_id: Math.floor(Math.random() * volunteerArr.length) + 1,
+    });
+  }
+  return signUps;
 }
-const volunteerOpportunities = createRandomVolunteerOpportunities(
-  VolunteerOpportunityCount
-);
 
-// function createRandomVolunteerSignUps(count) {
-//   const signUps = [];
-//   for (var i = 0; i < count; i++) {
-//     signUps.push({
-//       opportunity_id:
-//         Math.floor(Math.random() * VolunteerOpportunityCount) + 1,
-//       volunteer_id: Math.floor(Math.random() * volunteerArr.length) + 1,
-//     });
-//   }
-//   return signUps;
-// }
-
-// const volunteerSignups = createRandomVolunteerSignUps(signUpCount);
-
-export { randomUsers, volunteers, organizations, volunteerOpportunities };
+const volunteerSignups = createRandomVolunteerSignUps(signUpCount);
+*/
+export {
+  randomUsers,
+  createRandomVolunteers,
+  createRandomOrganizations,
+  createRandomVolunteerOpportunities,
+  // volunteerSignups,
+};

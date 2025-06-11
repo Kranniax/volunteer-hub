@@ -1,16 +1,16 @@
 import {
   randomUsers,
-  volunteers,
-  organizations,
-  volunteerOpportunities,
- 
+  createRandomVolunteers,
+  createRandomOrganizations,
+  createRandomVolunteerOpportunities,
+  // volunteerSignups,
 } from "./seedData.js";
 import {
   User,
   Volunteer,
   Organization,
   Opportunity,
-  Signup,
+  // Signup,
 } from "../../models/index.js";
 import { sequelize } from "../../config/connections.js";
 
@@ -29,10 +29,17 @@ async function seedModels() {
 
     // Re-enable foreign key checks
     await sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
-    await User.bulkCreate(randomUsers);
-    await Volunteer.bulkCreate(volunteers);
-    await Organization.bulkCreate(organizations);
-    await Opportunity.bulkCreate(volunteerOpportunities);
+    const userModal = await User.bulkCreate(randomUsers);
+
+    const userArr = userModal.map((user) => user.get({ plain: true }));
+    const volunteerArr = userArr.filter((v) => v.role === "volunteer");
+    const organizationArr = userArr.filter((o) => o.role === "organization");
+    const adminArr = userArr.filter((a) => a.role === "admin");
+
+    await Volunteer.bulkCreate(createRandomVolunteers(volunteerArr));
+
+    await Organization.bulkCreate(createRandomOrganizations(organizationArr));
+    await Opportunity.bulkCreate(createRandomVolunteerOpportunities(organizationArr));
     // await Signup.bulkCreate(volunteerSignups);
     console.log("Seed data inserted successfully");
   } catch (error) {
