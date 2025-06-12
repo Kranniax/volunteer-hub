@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 
 const userCount = 100;
 const opportunityCount = 50;
-const signUpCount = 50;
+const signUpCount = 100;
 
 // Create random users.
 function createRandomUsers(count) {
@@ -105,16 +105,29 @@ var createRandomVolunteerOpportunities = function (organizationArr) {
 };
 
 var createRandomVolunteerSignUps = function (opportunityArr, volunteerArr) {
-  const signUps = [];
+  const signups = [];
+  const usedCombinations = new Set();
+
   for (var i = 0; i < signUpCount; i++) {
-    signUps.push({
-      opportunity_id:
-        opportunityArr[Math.floor(Math.random() * opportunityArr.length)].id,
-      volunteer_id:
-        volunteerArr[Math.floor(Math.random() * volunteerArr.length)].id,
+    let opportunityId, volunteerId, combination;
+
+    // Keep generating until we find a unique combination
+    do {
+      opportunityId =
+        opportunityArr[Math.floor(Math.random() * opportunityArr.length)].id;
+      volunteerId =
+        volunteerArr[Math.floor(Math.random() * volunteerArr.length)].id;
+      combination = `${opportunityId}-${volunteerId}`;
+    } while (usedCombinations.has(combination));
+
+    usedCombinations.add(combination);
+
+    signups.push({
+      opportunity_id: opportunityId,
+      volunteer_id: volunteerId,
     });
   }
-  return signUps;
+  return signups;
 };
 
 export {
