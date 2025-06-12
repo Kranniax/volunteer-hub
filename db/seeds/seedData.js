@@ -19,7 +19,7 @@ function createRandomUsers(count) {
 }
 const randomUsers = createRandomUsers(userCount);
 
-// Create random volunteers.
+// Create random volunteers based on an array of volunteer user objects
 var createRandomVolunteers = function (volunteerArr) {
   var randomVolunteers = [];
   var relationships = [
@@ -33,7 +33,7 @@ var createRandomVolunteers = function (volunteerArr) {
 
   for (var i = 0; i < volunteerArr.length; i++) {
     var volunteer = {
-      user_id: volunteerArr[i].id,
+      user_id: volunteerArr[i].id, // Link to the corresponding user
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       phone: faker.phone.number({ style: "national" }),
@@ -56,13 +56,13 @@ var createRandomVolunteers = function (volunteerArr) {
   return randomVolunteers;
 };
 
-// create random organizations.
+// Create random organizations based on an array of organization user objects
 var createRandomOrganizations = function (organizationArr) {
   var randomOrganizationsArr = [];
 
   for (var i = 0; i < organizationArr.length; i++) {
     var organization = {
-      user_id: organizationArr[i].id,
+      user_id: organizationArr[i].id, // Link to the corresponding user
       name: faker.company.name(),
       description: faker.company.catchPhrase(),
       mission: faker.company.catchPhraseDescriptor(),
@@ -81,13 +81,13 @@ var createRandomOrganizations = function (organizationArr) {
   return randomOrganizationsArr;
 };
 
-// create random volunteer opportunities.
+// Create random volunteer opportunities, each linked to a random organization
 var createRandomVolunteerOpportunities = function (organizationArr) {
   const statuses = ["open", "closed", "pending"];
   const opportunities = [];
   for (let i = 0; i < opportunityCount; i++) {
     opportunities.push({
-      // Use a valid organization_id from organizationArr (which is an array of user IDs for organizations)
+      // Use a valid organization_id from organizationArr (which is an array of organization objects)
       organization_id:
         organizationArr[Math.floor(Math.random() * organizationArr.length)].id,
       title: faker.company.catchPhrase(),
@@ -104,13 +104,13 @@ var createRandomVolunteerOpportunities = function (organizationArr) {
   return opportunities;
 };
 
+// Create unique volunteer signups for opportunities (no duplicate pairs)
 var createRandomVolunteerSignUps = function (opportunityArr, volunteerArr) {
   const signups = [];
   const usedCombinations = new Set();
 
   for (var i = 0; i < signUpCount; i++) {
     let opportunityId, volunteerId, combination;
-
     // Keep generating until we find a unique combination
     do {
       opportunityId =
@@ -119,9 +119,7 @@ var createRandomVolunteerSignUps = function (opportunityArr, volunteerArr) {
         volunteerArr[Math.floor(Math.random() * volunteerArr.length)].id;
       combination = `${opportunityId}-${volunteerId}`;
     } while (usedCombinations.has(combination));
-
     usedCombinations.add(combination);
-
     signups.push({
       opportunity_id: opportunityId,
       volunteer_id: volunteerId,
