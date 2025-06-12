@@ -49,7 +49,7 @@ Volunteer.belongsToMany(Opportunity, {
 
 Opportunity.belongsToMany(Volunteer, {
   through: Signup, // Join table
-  foreignKey: "volunteer_opportunity_id",
+  foreignKey: "opportunity_id",
   otherKey: "volunteer_id",
 });
 
