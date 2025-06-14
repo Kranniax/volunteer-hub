@@ -53,6 +53,7 @@ router.put("/:id", async (req, res) => {
   try {
     // The update request return an array with the number of affected rows.
     const [updatedUserData] = await User.update(req.body, {
+      individualHooks: true,
       where: {
         id: req.params.id,
       },

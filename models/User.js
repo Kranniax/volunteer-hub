@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 // Import the sequelize instance from your config file
 import { sequelize } from "../config/connections.js";
+import bcrypt from "bcrypt";
 
 // Define the Volunteer model by extending Sequelize's Model class
 class User extends Model {}
@@ -38,6 +39,20 @@ User.init(
     },
   },
   {
+    hooks: {
+      // set up beforeCreate lifecycle "hook" functionality
+       beforeCreate: async (newUserData) => {
+        newUserData.password = await bcrypt.hash(newUserData.password, 10);
+        return newUserData;
+      },
+      beforeUpdate: async (updatedUserData) => {
+        updatedUserData.password = await bcrypt.hash(
+          updatedUserData.password,
+          10
+        );
+        return updatedUserData;
+      },
+    },
     sequelize, // Pass the sequelize instance
     // Don't automatically create createdAt/updatedAt timestamp fields
     timestamps: true,
