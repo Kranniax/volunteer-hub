@@ -48,6 +48,32 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: err });
   }
 });
+// Create a login authentication
+router.post("/login", async (req, res) => {
+  try {
+    const dbUserData = await User.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+
+    if (!dbUserData) {
+      res.status(404).json({ message: "No user with that email address!" });
+      return;
+    }
+    // res.json({ user: dbUserData });
+    const validPassword =  await dbUserData.checkPassword(req.body.password);
+    if (!validPassword) {
+      res.status(400).json({ message: "Incorrect password!" });
+      return;
+    }
+
+    res.json({ user: dbUserData, message: "You are now logged in!" });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // Update a user
 router.put("/:id", async (req, res) => {
   try {

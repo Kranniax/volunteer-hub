@@ -4,7 +4,13 @@ import { sequelize } from "../config/connections.js";
 import bcrypt from "bcrypt";
 
 // Define the Volunteer model by extending Sequelize's Model class
-class User extends Model {}
+class User extends Model {
+  // set up method to run on instance data (per user) to check password
+  async checkPassword(loginPw) {
+    const match = await bcrypt.compare(loginPw, this.password);
+    return match;
+  }
+}
 
 // Initialize the User model with its schema and options
 User.init(
@@ -41,7 +47,7 @@ User.init(
   {
     hooks: {
       // set up beforeCreate lifecycle "hook" functionality
-       beforeCreate: async (newUserData) => {
+      beforeCreate: async (newUserData) => {
         newUserData.password = await bcrypt.hash(newUserData.password, 10);
         return newUserData;
       },
