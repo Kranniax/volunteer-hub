@@ -4,8 +4,10 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { sequelize } from "./config/connections.js";
 import controller from "./controllers/index.js";
+import { create } from "express-handlebars";
 
 const app = express();
+const hbs = create({});
 const PORT = process.env.PORT || 3001;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,6 +18,11 @@ const __dirname = dirname(__filename);
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files from 'public' directory
+
+// Registration of the handlebars templating language.
+app.engine("handlebars", hbs.engine);
+app.set("view engine", "handlebars");
+app.set("views", "./views");
 
 // Use the api routes
 app.use(controller);
