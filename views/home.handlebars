@@ -1,0 +1,31 @@
+<section>
+    <h2>Find Volunteer Opportunities</h2>
+    <p>Connect with local organizations and make a difference in your community.</p>
+    <a href="/opportunities" class="btn">Browse Opportunities</a>
+</section>
+
+<section>
+    <h2>How It Works</h2>
+    <ol>
+        <li>Sign up or log in to your account.</li>
+        <li>Browse and apply for volunteer opportunities.</li>
+        <li>Track your impact and connect with others.</li>
+    </ol>
+</section>
+<section>
+    <h2>Featured Opportunities</h2>
+    {{#if opportunities.length}}
+        <ul>
+            {{#each opportunities}}
+                <li>
+                    <h3><a href="/opportunities/{{this.id}}">{{this.title}}</a></h3>
+                    <p>{{this.description}}</p>
+                    <p><strong>Location:</strong> {{this.location}}</p>
+                    <p><strong>Date:</strong> {{this.date}}</p>
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>No opportunities available at this time.</p>
+    {{/if}}
+</section>
