@@ -1,11 +1,7 @@
 
-    <main class="signup-container">
+    <section class="signup-container">
         <h1>Sign Up</h1>
         <form action="/signup" method="POST" class="signup-form">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
@@ -14,7 +10,15 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
             </div>
+            <div class="form-group">
+                <label for="myDropdown">Choose a role:</label>
+                <select id="myDropdown" name="myDropdown">
+                    <option value="volunteer">Volunteer</option>
+                    <option value="organization">Organization</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
             <button type="submit">Sign Up</button>
         </form>
         <p>Already have an account? <a href="/login">Log in</a></p>
-    </main>
+    </section>
