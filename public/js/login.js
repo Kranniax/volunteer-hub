@@ -2,22 +2,26 @@ var loginFormHandler = async function (event) {
   event.preventDefault();
   const email = document.querySelector("#email").value.trim();
   const password = document.querySelector("#password").value.trim();
+  // Check for any blank inputted fields. 
+  if (email && password) {
+    try {
+      const response = await fetch("http://localhost:3001/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-  try {
-    const response = await fetch("http://localhost:3001/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: email, password: password }),
-    });
-
-    if (response.ok) {
-      // if successful render the homepage.
-      document.location.replace("/");
+      if (response.ok) {
+        // if successful render the homepage.
+        document.location.replace("/");
+      } else {
+        alert(response.statusText);
+      }
+    } catch (error) {
+      alert(error.message);
     }
-  } catch (error) {
-    alert(error);
   }
 };
 
