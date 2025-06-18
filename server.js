@@ -5,6 +5,8 @@ import { dirname } from "path";
 import { sequelize } from "./config/connections.js";
 import controller from "./controllers/index.js";
 import { create } from "express-handlebars";
+import session from "express-session";
+
 
 const app = express();
 const hbs = create({});
