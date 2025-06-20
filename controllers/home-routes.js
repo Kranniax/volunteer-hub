@@ -9,13 +9,19 @@ router.get("/", async (req, res) => {
     const opportunities = dbOpportunities.map((opportunity) =>
       opportunity.get({ plain: true })
     );
-    res.render("home", { opportunities });
+    // console.log(req.session);
+
+    res.render("home", { opportunities, loggedIn: req.session.loggedIn });
   } catch (err) {
     res.status(500).json({ error: err });
   }
 });
 
 router.get("/login", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect("/");
+    return;
+  }
   res.render("login");
 });
 router.get("/signup", (req, res) => {

@@ -12,9 +12,9 @@
             <a href="/">Home</a>
             <a href="/events">Events</a>
             <a href="/about">About</a>
-            {{#if user}}
-                <span>Welcome, {{user.name}}</span>
-                <a href="/logout">Logout</a>
+            {{#if loggedIn}}
+                {{!-- <span>Welcome, {{user.name}}</span> --}}
+            <button id="logout">logout</button>
             {{else}}
                 <a href="/login">Login</a>
                 <a href="/signup">Signup</a>
@@ -27,6 +27,9 @@
     <footer>
         <p></p>
     </footer>
+    {{#if loggedIn}}
+    <script src="/js/logout.js"></script>
+    {{/if}}
 </body>
 <script>
      document.querySelector("footer p").innerHTML = `&#169 ${new Date().getFullYear() } Volunteer Hub` 

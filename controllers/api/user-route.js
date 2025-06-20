@@ -41,8 +41,15 @@ router.post("/", async (req, res) => {
       password: req.body.password,
       role: req.body.role,
     });
+    // Save inputted data into a sessions.
+    req.session.save(() => {
+      req.session.user_id = newUserData.id;
+      req.session.email = newUserData.email;
+      req.session.role = newUserData.role;
+      req.session.loggedIn = true;
 
-    res.status(201).json(newUserData);
+      res.status(201).json(newUserData);
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });
@@ -62,16 +69,32 @@ router.post("/login", async (req, res) => {
       return;
     }
     // res.json({ user: dbUserData });
-    const validPassword =  await dbUserData.checkPassword(req.body.password);
+    const validPassword = await dbUserData.checkPassword(req.body.password);
     if (!validPassword) {
       res.status(400).json({ message: "Incorrect password!" });
       return;
     }
 
-    res.json({ user: dbUserData, message: "You are now logged in!" });
+    req.session.save(() => {
+      // Declare session variables.
+      req.session.user_id = dbUserData.id;
+      req.session.email = dbUserData.email;
+      req.session.loggedIn = true;
 
+      res.json({ user: dbUserData, message: "You are now logged in!" });
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+// Logout a session or user
+router.post("/logout", (req, res) => {
+  if (req.session.loggedIn) {
+    res.session.destroy(() => {
+      res.status(204).end();
+    });
+  } else {
+    res.status(404).end();
   }
 });
 // Update a user

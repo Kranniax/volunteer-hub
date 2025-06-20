@@ -6,7 +6,10 @@ import { sequelize } from "./config/connections.js";
 import controller from "./controllers/index.js";
 import { create } from "express-handlebars";
 import session from "express-session";
+import connectSessionSequelize from "connect-session-sequelize";
 
+
+import "dotenv/config";
 
 const app = express();
 const hbs = create({});
@@ -20,6 +23,23 @@ const __dirname = dirname(__filename);
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files from 'public' directory
+
+
+// Create the session store - note the different syntax
+const SequelizeStore = connectSessionSequelize(session.Store);
+// Setting up sessions on the backend server.
+ const sess = {
+   secret: process.env.SESSION_KEY,
+   cookie: {},
+   maxAge: 1800000, // session expires after 30mins.
+   resave: false,
+   saveUninitialized: true,
+   // Store session data on database
+   store: new SequelizeStore({
+     db: sequelize,
+   }),
+ };
+app.use(session(sess));
 
 // Registration of the handlebars templating language.
 app.engine("handlebars", hbs.engine);
