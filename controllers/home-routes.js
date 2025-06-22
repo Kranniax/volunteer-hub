@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
     );
     // console.log(req.session);
 
-    res.render("home", { opportunities, loggedIn: req.session.loggedIn });
+    res.render("home", { opportunities, loggedIn: req.session.loggedIn});
   } catch (err) {
     res.status(500).json({ error: err });
   }
