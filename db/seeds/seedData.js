@@ -94,6 +94,7 @@ var createRandomVolunteerOpportunities = function (organizationArr) {
       description: faker.lorem.paragraph(),
       requirements: faker.lorem.sentence(),
       date: faker.date.future(),
+      location: `${faker.location.streetAddress()}, ${faker.location.city()}, ${faker.location.state()} ${faker.location.zipCode()}`,
       startTime: faker.date.future().toTimeString().slice(0, 8),
       endTime: faker.date.future().toTimeString().slice(0, 8),
       spotsAvailable: faker.number.int({ min: 1, max: 20 }),

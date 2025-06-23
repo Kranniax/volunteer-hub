@@ -47,6 +47,10 @@ Opportunity.init(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    location: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     // The start time of the volunteer opportunity
     startTime: {
       type: DataTypes.TIME,

@@ -1,0 +1,19 @@
+<section class="opportunities-section">
+    <h1>Volunteer Opportunities</h1>
+    {{#if opportunities.length}}
+        <ul class="opportunities-list">
+            {{#each opportunities}}
+                <li class="opportunity-item">
+                    <h2>{{this.title}}</h2>
+                    <p><strong>Organization:</strong> {{this.organization}}</p>
+                    <p><strong>Date:</strong> {{this.date}}</p>
+                    <p><strong>Location:</strong> {{this.location}}</p>
+                    <p>{{this.description}}</p>
+                    <a href="/opportunities/{{this.id}}" class="btn btn-secondary">View Details</a>
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>No volunteer opportunities available.</p>
+    {{/if}}
+</section>

@@ -16,7 +16,19 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: err });
   }
 });
-// render a single volunteer opportunity
+
+// render all volunteer opportunities
+router.get("/opportunities", async (req, res) => {
+  try {
+    const dbOpportunities = await Opportunity.findAll();
+    const opportunities = dbOpportunities.map((opportunity) =>
+      opportunity.get({ plain: true })
+    );
+    res.render("opportunities", { opportunities, loggedIn: req.session.loggedIn });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+});
 router.get("/opportunities/:id", async (req, res) => {
   try {
     const dbOpportunityData = await Opportunity.findByPk(req.params.id);
