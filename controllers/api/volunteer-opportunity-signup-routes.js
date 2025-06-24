@@ -2,20 +2,18 @@ import { Router } from "express";
 import { Signup } from "../../models/index.js";
 
 const router = Router();
-
+// Get all volunteer opportunity signups
 router.get("/", async (req, res) => {
   try {
-    // Get all volunteer opportunity signups
     const signups = await Signup.findAll();
     res.status(200).json(signups);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
-
+// Get a single volunteer opportunity signup by id
 router.get("/:id", async (req, res) => {
   try {
-    // Get a single volunteer opportunity signup by id
     const singleSignup = await Signup.findOne({
       where: {
         id: req.params.id,
@@ -30,20 +28,18 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
+// Create a new volunteer opportunity signup
 router.post("/", async (req, res) => {
   try {
-    // Create a new volunteer opportunity signup
     const newSignup = await Signup.create(req.body);
     res.status(201).json(newSignup);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
-
+// Delete a volunteer opportunity signup by id
 router.delete("/:id", async (req, res) => {
   try {
-    // Delete a volunteer opportunity signup by id
     const deletedSignup = await Signup.destroy({
       where: {
         id: req.params.id,

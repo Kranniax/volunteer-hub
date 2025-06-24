@@ -8,9 +8,6 @@
     {{#if opportunity.requirements}}
         <h3>Requirements</h3>
         <ul>
-            {{!-- {{#each opportunity.requirements}}
-                <li>{{this}}</li>
-            {{/each}} --}}
             {{opportunity.requirements}}
         </ul>
     {{/if}}
@@ -35,3 +32,6 @@
         <p><a href="/login">Log in</a> to sign up for this opportunity.</p>
     {{/if}}
 </section>
+{{#if loggedIn}}
+<script src="/js/volunteer-signup.js"></script>
+{{/if}}

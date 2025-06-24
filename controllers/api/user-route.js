@@ -32,7 +32,29 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: err });
   }
 });
-
+// Get
+router.get("/:id/profile", async (req, res) => {
+  try {
+    const response = await User.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: [
+        {
+          model: Volunteer,
+          as: "volunteerProfile",
+        },
+      ],
+    });
+    if (!response) {
+      res.status(404).json({ message: "Cannot locate this user" });
+      return;
+    }
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // Create a new user.
 router.post("/", async (req, res) => {
   try {
