@@ -32,12 +32,12 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: err });
   }
 });
-// Get
-router.get("/:id/profile", async (req, res) => {
+// Get a user profile
+router.get("/profile", async (req, res) => {
   try {
     const response = await User.findOne({
       where: {
-        id: req.params.id,
+        id: req.session.user_id,
       },
       include: [
         {

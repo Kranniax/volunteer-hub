@@ -1,14 +1,8 @@
-
-
-
-var volunteerSignupHandler =  async function (event) {
-    event.preventDefault();
-    
+var volunteerSignupHandler = async function (event) {
+  event.preventDefault();
+  const opportunityID = window.location.pathname.split("/").pop();
 };
 
-
-
-
-
-
-document.querySelector("form button").addEventListener("submit", volunteerSignupHandler);
+document
+  .querySelector("form")
+  .addEventListener("submit", volunteerSignupHandler);
