@@ -13,25 +13,6 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-// Get a single user.
-router.get("/:id", async (req, res) => {
-  try {
-    const dbSingleUserData = await User.findOne({
-      where: {
-        id: req.params.id,
-      },
-    });
-    if (!dbSingleUserData) {
-      res.status(404).json({ message: "Cannot locate user with this id." });
-      return;
-    }
-    res.status(200).json(dbSingleUserData);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err });
-  }
-});
 // Get a user profile
 router.get("/profile", async (req, res) => {
   try {
@@ -55,6 +36,26 @@ router.get("/profile", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Get a single user.
+router.get("/:id", async (req, res) => {
+  try {
+    const dbSingleUserData = await User.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!dbSingleUserData) {
+      res.status(404).json({ message: "Cannot locate user with this id." });
+      return;
+    }
+    res.status(200).json(dbSingleUserData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+});
+
 // Create a new user.
 router.post("/", async (req, res) => {
   try {
