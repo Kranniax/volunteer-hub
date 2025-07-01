@@ -1,9 +1,13 @@
+const signupForm = document.querySelector("form");
+const signupBtn = document.querySelector("button");
 const volunteerUListEl = document.querySelector(".volunteer-list");
 const opportunity_id = parseInt(window.location.pathname.split("/").pop());
 
-// Sign up for a volunteer opportunity.
+// A users signs up for a opportunity.
 var volunteerSignupHandler = async function (event) {
   event.preventDefault();
+  // Diable button when pressed.
+  signupBtn.disabled = true;
   const profileEndpoint = "http://localhost:3001/api/users/profile";
   const signupEndPoint = "http://localhost:3001/api/signups";
 
@@ -22,38 +26,26 @@ var volunteerSignupHandler = async function (event) {
       },
       body: JSON.stringify({ opportunity_id, volunteer_id }),
     });
-    const signupResult = await signupResponse.json();
-    // console.log(signupResult);
 
     if (signupResponse.ok) {
+      // Reload after sucessfull post to signup model.
       location.reload();
+    } else {
+      signupBtn.disabled = false; // Re-enable if signup fails
     }
   } catch (error) {
     console.error(error.message);
+    signupBtn.disabled = false; // Re-enable on error
   }
-  // Reload after sucessfull post to signup model.
 };
 
-// Get volunteer profiles based on volunteer profile ids.
-async function getVolunteersProfiles(volunteerIds) {
-  const volunteers = [];
-  for (var i = 0; i < volunteerIds.length; i++) {
-    const volunteerProfileResponse = await fetch(
-      `http://localhost:3001/api/volunteers/${volunteerIds[i]}`
-    );
-    const volunteerProfile = await volunteerProfileResponse.json();
-    volunteers.push(volunteerProfile);
-  }
-  const volunteersNames = volunteers.map((v) => `${v.firstName} ${v.lastName}`);
-  displayVolunteerList(volunteersNames);
-}
-
-// Helper function to get an array of volunteer profile ids.
+// Helper function to get an array of volunteer names.
 function volunteerProfileHandler(signups) {
-  const volunteerProfileIds = signups.map(
-    (volunteer) => volunteer.volunteer_id
+  const volunteerNames = signups.map(
+    (volunteer) => `${volunteer.firstName} ${volunteer.lastName}`
   );
-  getVolunteersProfiles(volunteerProfileIds);
+
+  displayVolunteerList(volunteerNames);
 }
 
 // Display list of attending volunteers.
@@ -68,17 +60,21 @@ function displayVolunteerList(volunteers) {
 }
 // Load all all volunteers who signed up.
 var init = async () => {
-  const url = `http://localhost:3001/api/signups/opportunity/${opportunity_id}`;
+  const url = `http://localhost:3001/api/opportunities/${opportunity_id}`;
   try {
-    const signupsResponse = await fetch(url);
-    const signups = await signupsResponse.json();
-    volunteerProfileHandler(signups);
+    const opportunityResponse = await fetch(url);
+    const { volunteers } = await opportunityResponse.json();
+    if (volunteers.length === 0) {
+      volunteerUListEl.innerHTML =
+        "<li>No sign-ups yet—this could be your moment to shine.</li>";
+      return;
+    }
+    volunteerProfileHandler(volunteers);
   } catch (error) {
     console.error(error.message);
   }
 };
 
 init();
-document
-  .querySelector("form")
-  .addEventListener("submit", volunteerSignupHandler);
+
+signupForm.addEventListener("submit", volunteerSignupHandler);
