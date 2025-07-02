@@ -47,13 +47,16 @@ router.get("/:id", async (req, res) => {
 
 // Create a volunteer
 router.post("/", async (req, res) => {
-  try {
-    const newVolunteerData = await Volunteer.create(req.body);
+  req.body.user_id = req.session.user_id;
+  // console.log(req.body);
+  
+  // try {
+  //   const newVolunteerData = await Volunteer.create(req.body);
 
-    res.status(201).json(newVolunteerData);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  //   res.status(201).json(newVolunteerData);
+  // } catch (err) {
+  //   res.status(500).json({ error: err.message });
+  // }
 });
 
 // Update a volunteer

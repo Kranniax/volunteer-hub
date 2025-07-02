@@ -24,7 +24,10 @@ router.get("/opportunities", async (req, res) => {
     const opportunities = dbOpportunities.map((opportunity) =>
       opportunity.get({ plain: true })
     );
-    res.render("opportunities", { opportunities, loggedIn: req.session.loggedIn });
+    res.render("opportunities", {
+      opportunities,
+      loggedIn: req.session.loggedIn,
+    });
   } catch (err) {
     res.status(500).json({ error: err });
   }
@@ -47,6 +50,15 @@ router.get("/opportunities/:id", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+// render volunteer creation page
+router.get("/volunteer-profile", (req, res) => {
+  res.render("volunteer-profile", { loggedIn: req.session.loggedIn });
+});
+
+// render organization creation page
+router.get("/organization-profile", (req, res) => {
+  res.render("organization-profile", { loggedIn: req.session.loggedIn });
 });
 // render login page
 router.get("/login", (req, res) => {
