@@ -1,0 +1,47 @@
+<section class="organization-profile-create">
+    <h2>Create Your Organization Profile</h2>
+    <form method="POST" class="organization-form">
+        <div class="form-group">
+            <label for="name">Organization Name</label>
+            <input type="text" id="name" name="name" value="{{name}}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="3" required>{{description}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="mission">Mission Statement</label>
+            <textarea id="mission" name="mission" rows="2">{{mission}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" value="{{phone}}">
+        </div>
+        <div class="form-group">
+            <label for="website">Website</label>
+            <input type="url" id="website" name="website" value="{{website}}">
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" value="{{address}}">
+        </div>
+        <div class="form-group">
+            <label for="latitude">Latitude</label>
+            <input type="number" step="any" id="latitude" name="latitude" value="{{latitude}}">
+        </div>
+        <div class="form-group">
+            <label for="longitude">Longitude</label>
+            <input type="number" step="any" id="longitude" name="longitude" value="{{longitude}}">
+        </div>
+        <div class="form-group">
+            <label for="contactPerson">Main Contact Person</label>
+            <input type="text" id="contactPerson" name="contactPerson" value="{{contactPerson}}">
+        </div>
+        <div class="form-group">
+            <label for="logoImage">Logo Image URL</label>
+            <input type="url" id="logoImage" name="logoImage" value="{{logoImage}}">
+        </div>
+        <button type="submit">Create Organization Profile</button>
+    </form>
+</section>
+<script src="/js/organization-profile-creation.js"></script>

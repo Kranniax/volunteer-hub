@@ -33,6 +33,8 @@ router.get("/:id", async (req, res) => {
 
 // CREATE a new organization
 router.post("/", async (req, res) => {
+  req.body.user_id = req.session.user_id;
+
   try {
     const newOrg = await Organization.create(req.body);
     res.status(201).json(newOrg);
