@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Opportunity, Signup, Volunteer } from "../../models/index.js";
+import { withAuth } from "../../utils/auth.js";
 
 const router = Router();
 
@@ -34,7 +35,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // CREATE a new volunteer opportunity
-router.post("/", async (req, res) => {
+router.post("/", withAuth, async (req, res) => {
   try {
     const newOpportunity = await Opportunity.create(req.body);
     res.status(201).json(newOpportunity);
@@ -44,7 +45,7 @@ router.post("/", async (req, res) => {
 });
 
 // UPDATE a volunteer opportunity
-router.put("/:id", async (req, res) => {
+router.put("/:id", withAuth, async (req, res) => {
   try {
     const [updated] = await Opportunity.update(req.body, {
       where: { id: req.params.id },
@@ -60,7 +61,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE a volunteer opportunity
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", withAuth, async (req, res) => {
   try {
     const deleted = await Opportunity.destroy({
       where: { id: req.params.id },

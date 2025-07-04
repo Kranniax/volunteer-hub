@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Organization, Opportunity } from "../../models/index.js";
+import { withAuth } from "../../utils/auth.js";
 
 const router = Router();
 
@@ -32,19 +33,22 @@ router.get("/:id", async (req, res) => {
 });
 
 // CREATE a new organization
-router.post("/", async (req, res) => {
+router.post("/", withAuth, async (req, res) => {
   req.body.user_id = req.session.user_id;
 
   try {
     const newOrg = await Organization.create(req.body);
-    res.status(201).json(newOrg);
+    req.session.save(() => {
+      req.session.organization_id = newOrg.id;
+      res.status(201).json(newOrg);
+    });
   } catch (err) {
     res.status(400).json({ error: "Failed to create organization" });
   }
 });
 
 // UPDATE an organization by id
-router.put("/:id", async (req, res) => {
+router.put("/:id", withAuth, async (req, res) => {
   try {
     const [updated] = await Organization.update(req.body, {
       where: { id: req.params.id },
@@ -60,7 +64,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE an organization by id
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", withAuth, async (req, res) => {
   try {
     const deleted = await Organization.destroy({
       where: { id: req.params.id },

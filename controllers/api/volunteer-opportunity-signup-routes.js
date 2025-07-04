@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Signup } from "../../models/index.js";
-import { where } from "sequelize";
+import { withAuth } from "../../utils/auth.js";
 
 const router = Router();
 // Get all volunteer opportunity signups
@@ -51,7 +51,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 // Create a new volunteer opportunity signup
-router.post("/", async (req, res) => {
+router.post("/", withAuth, async (req, res) => {
   try {
     const newSignup = await Signup.create(req.body);
     res.status(201).json(newSignup);
@@ -60,7 +60,7 @@ router.post("/", async (req, res) => {
   }
 });
 // Delete a volunteer opportunity signup by id
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", withAuth, async (req, res) => {
   try {
     const deletedSignup = await Signup.destroy({
       where: {

@@ -1,6 +1,12 @@
 import { Router } from "express";
 import { sequelize } from "../../config/connections.js";
-import { Volunteer, Organization, Opportunity, Signup } from "../../models/index.js";
+import {
+  Volunteer,
+  Organization,
+  Opportunity,
+  Signup,
+} from "../../models/index.js";
+import { withAuth } from "../../utils/auth.js";
 
 const router = Router();
 
@@ -46,21 +52,23 @@ router.get("/:id", async (req, res) => {
 });
 
 // Create a volunteer
-router.post("/", async (req, res) => {
+router.post("/", withAuth, async (req, res) => {
   req.body.user_id = req.session.user_id;
-  // console.log(req.body);
-  // res.status(200);
+
   try {
     const newVolunteerData = await Volunteer.create(req.body);
 
-    res.status(201).json(newVolunteerData);
+    req.session.save(() => {
+      req.session.volunteer_id = newVolunteerData.id;
+      res.status(201).json(newVolunteerData);
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 // Update a volunteer
-router.put("/:id", async (req, res) => {
+router.put("/:id", withAuth, async (req, res) => {
   try {
     const updateVolunteerData = await Volunteer.update(req.body, {
       where: {
@@ -80,7 +88,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // Delete a volunteer
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", withAuth, async (req, res) => {
   try {
     const deletedVolunteerData = await Volunteer.destroy({
       where: {

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Opportunity } from "../models/index.js";
+import { loggedInAuth, withAuth } from "../utils/auth.js";
 
 const router = Router();
 // render all volunteer opportunites
@@ -9,7 +10,7 @@ router.get("/", async (req, res) => {
     const opportunities = dbOpportunities.map((opportunity) =>
       opportunity.get({ plain: true })
     );
-    // console.log(req.session);
+    console.log(req.session);
 
     res.render("home", { opportunities, loggedIn: req.session.loggedIn });
   } catch (err) {
@@ -52,12 +53,12 @@ router.get("/opportunities/:id", async (req, res) => {
   }
 });
 // render volunteer creation page
-router.get("/volunteer-profile", (req, res) => {
+router.get("/volunteer-profile", withAuth, loggedInAuth, (req, res) => {
   res.render("volunteer-profile", { loggedIn: req.session.loggedIn });
 });
 
 // render organization creation page
-router.get("/organization-profile", (req, res) => {
+router.get("/organization-profile", withAuth, (req, res) => {
   res.render("organization-profile", { loggedIn: req.session.loggedIn });
 });
 // render login page
