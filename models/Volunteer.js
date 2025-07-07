@@ -19,6 +19,7 @@ Volunteer.init(
     // Foreign key: references the user table
     user_id: {
       type: DataTypes.INTEGER,
+      unique: true,
       references: {
         model: "user",
         key: "id",

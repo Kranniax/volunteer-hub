@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
     const opportunities = dbOpportunities.map((opportunity) =>
       opportunity.get({ plain: true })
     );
-    console.log(req.session);
+    // console.log(req.session);
 
     res.render("home", { opportunities, loggedIn: req.session.loggedIn });
   } catch (err) {

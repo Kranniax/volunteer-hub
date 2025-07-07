@@ -6,7 +6,9 @@ const router = Router();
 // Get all users.
 router.get("/", async (req, res) => {
   try {
-    const dbUserData = await User.findAll();
+    const dbUserData = await User.findAll({
+      attributes: { exclude: ["password"] },
+    });
     res.status(200).json(dbUserData);
   } catch (err) {
     console.error(err);
@@ -44,6 +46,7 @@ router.get("/:id", async (req, res) => {
       where: {
         id: req.params.id,
       },
+      attributes: { exclude: ["password"] },
     });
     if (!dbSingleUserData) {
       res.status(404).json({ message: "Cannot locate user with this id." });

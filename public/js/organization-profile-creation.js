@@ -39,10 +39,11 @@ var organizationProfileFormHandler = async function (event) {
       });
 
       if (response.ok) {
-        document.location.replace("/");
+        window.location.replace("/");
       } else {
         const errorData = await response.json();
         alert(errorData.message || "Organization profile creation failed");
+        window.location.replace("/");
       }
     } catch (error) {
       alert("Network error: " + error.message);

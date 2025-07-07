@@ -28,7 +28,7 @@ var volunteerProfileFormHandler = async function (event) {
     profileImage: profileImage,
     isActive: true,
   };
-//   console.log(profile);
+  //   console.log(profile);
 
   // Check for any blank input fields.
   if (firstName && lastName && dateOfBirth && address) {
@@ -43,10 +43,11 @@ var volunteerProfileFormHandler = async function (event) {
 
       if (response.ok) {
         // if successful render homepage.
-        document.location.replace("/");
+        window.location.replace("/");
       } else {
         const errorData = await response.json();
-        alert(errorData.message || "Signup Failed");
+        alert(errorData.message || "Volunteer profile creation failed");
+        window.location.replace("/");
       }
     } catch (error) {
       alert("Network error: " + error.message);
