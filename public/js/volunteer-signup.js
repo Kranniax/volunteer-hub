@@ -1,24 +1,28 @@
+// Get form, button, and volunteer list elements
 const signupForm = document.querySelector("form");
 const signupBtn = document.querySelector("button");
 const volunteerUListEl = document.querySelector(".volunteer-list");
+// Get the opportunity ID from the URL
 const opportunity_id = parseInt(window.location.pathname.split("/").pop());
 
-// A users signs up for a opportunity.
+// A user signs up for an opportunity.
 var volunteerSignupHandler = async function (event) {
   event.preventDefault();
-  // Diable button when pressed.
+  // Disable button when pressed to prevent double submissions
   signupBtn.disabled = true;
   const profileEndpoint = "http://localhost:3001/api/users/profile";
   const signupEndPoint = "http://localhost:3001/api/signups";
+  const opportunity = `http://localhost:3001/api/opportunities/${opportunity_id}`;
 
   try {
+    // Fetch volunteer profile id for the current user
     const response = await fetch(profileEndpoint);
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
     const { volunteerProfile } = await response.json();
     const volunteer_id = volunteerProfile.id;
-
+    // Post a new signup request for this opportunity and volunteer
     const signupResponse = await fetch(signupEndPoint, {
       method: "POST",
       headers: {
@@ -26,9 +30,32 @@ var volunteerSignupHandler = async function (event) {
       },
       body: JSON.stringify({ opportunity_id, volunteer_id }),
     });
-
+    // Fetch the current opportunity data to get spots info
+    const spotsResponse = await fetch(opportunity);
+    if (!spotsResponse.ok) {
+      alert("Cannot locate opportunity with this id!");
+      signupBtn.disabled = false;
+      return;
+    }
+    const { spotsAvailable, spotsFilledCount } = await spotsResponse.json();
+    // Update the opportunity's spotsAvailable and spotsFilledCount
+    const updateSpotsResponse = await fetch(opportunity, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        spotsAvailable: spotsAvailable - 1,
+        spotsFilledCount: spotsFilledCount + 1,
+      }),
+    });
+    if (!updateSpotsResponse.ok) {
+      alert("Failed to update opportunity spots.");
+      signupBtn.disabled = false;
+      return;
+    }
+    // If signup was successful, reload the page
     if (signupResponse.ok) {
-      // Reload after sucessfull post to signup model.
       location.reload();
     } else {
       signupBtn.disabled = false; // Re-enable if signup fails
