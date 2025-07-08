@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Opportunity } from "../models/index.js";
+import { Opportunity, Organization } from "../models/index.js";
 import { loggedInAuth, withAuth } from "../utils/auth.js";
 
 const router = Router();
@@ -21,7 +21,15 @@ router.get("/", async (req, res) => {
 // render all volunteer opportunities
 router.get("/opportunities", async (req, res) => {
   try {
-    const dbOpportunities = await Opportunity.findAll();
+    const dbOpportunities = await Opportunity.findAll({
+      include: [
+        {
+          model: Organization,
+          as: "organization",
+          attributes: ["name"],
+        },
+      ],
+    });
     const opportunities = dbOpportunities.map((opportunity) =>
       opportunity.get({ plain: true })
     );

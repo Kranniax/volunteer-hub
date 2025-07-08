@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { Opportunity, Signup, Volunteer } from "../../models/index.js";
+import {
+  Opportunity,
+  Organization,
+  Signup,
+  Volunteer,
+} from "../../models/index.js";
 import { withAuth } from "../../utils/auth.js";
 
 const router = Router();
@@ -7,7 +12,15 @@ const router = Router();
 // GET all volunteer opportunities
 router.get("/", async (req, res) => {
   try {
-    const opportunities = await Opportunity.findAll();
+    const opportunities = await Opportunity.findAll({
+      include: [
+        {
+          model: Organization,
+          as:"organization",
+          attributes: ["name"],
+        },
+      ],
+    });
     res.json(opportunities);
   } catch (err) {
     res.status(500).json({ error: "Failed to get opportunities" });
