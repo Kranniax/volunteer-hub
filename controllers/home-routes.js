@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Opportunity, Organization } from "../models/index.js";
+import { Opportunity, Organization, Signup, Volunteer } from "../models/index.js";
 import { loggedInAuth, withAuth } from "../utils/auth.js";
 
 const router = Router();
@@ -43,7 +43,14 @@ router.get("/opportunities", async (req, res) => {
 });
 router.get("/opportunities/:id", async (req, res) => {
   try {
-    const dbOpportunityData = await Opportunity.findByPk(req.params.id);
+    const dbOpportunityData = await Opportunity.findByPk(req.params.id, {
+      include: [
+        {
+          model: Volunteer,
+          through: Signup,
+        },
+      ],
+    });
 
     if (!dbOpportunityData) {
       res
