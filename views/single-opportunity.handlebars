@@ -28,15 +28,26 @@
         
     <p><strong>Spots Available:</strong> {{opportunity.spotsAvailable}}</p>
     <p><strong>Spots Filled:</strong> {{opportunity.spotsFilledCount}}</p>
-
+    {{!-- Check user is logged in --}}
     {{#if loggedIn}}
-        <form action="/opportunities/{{opportunity.id}}/signup" method="POST">
-            <button type="submit">Sign Up</button>
+        {{!-- Check is user is signed up for this opportunity --}}
+        {{#if (signedUp loggedInUserId opportunity.volunteers)}}
+        <form id="cancel-signup-form" method="DELETE">
+            <button class="cancel-signup" type="submit">Cancel Sign Up</button>
         </form>
+        {{else}}
+        <form id="signup-form" method="POST">
+            <button class="signup-btn" type="submit">Sign Up</button>
+        </form>
+        {{/if}}        
     {{else}}
         <p><a href="/login">Log in</a> to sign up for this opportunity.</p>
     {{/if}}
 </section>
 {{#if loggedIn}}
-<script src="/js/volunteer-signup.js"></script>
+    {{#if (signedUp loggedInUserId opportunity.volunteers)}}
+        <script src="/js/cancel-signup.js"></script>
+    {{else}}   
+        <script src="/js/volunteer-signup.js"></script>
+    {{/if}}
 {{/if}}

@@ -1,6 +1,6 @@
 // Get form, button, and volunteer list elements
-const signupForm = document.querySelector("form");
-const signupButton = document.querySelector("button");
+const signupForm = document.querySelector("#signup-form");
+const signupButton = document.querySelector(".signup-btn");
 const volunteerListElement = document.querySelector(".volunteer-list");
 // Get the opportunity ID from the URL
 const opportunityId = parseInt(window.location.pathname.split("/").pop());
@@ -91,6 +91,8 @@ var init = async () => {
   try {
     const opportunityResponse = await fetch(url);
     const { volunteers } = await opportunityResponse.json();
+    console.log(volunteers);
+    
     if (volunteers.length === 0) {
       volunteerListElement.innerHTML =
         "<li>No sign-ups yet—this could be your moment to shine.</li>";

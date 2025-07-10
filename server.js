@@ -7,12 +7,13 @@ import controller from "./controllers/index.js";
 import { create } from "express-handlebars";
 import session from "express-session";
 import connectSessionSequelize from "connect-session-sequelize";
+import helpers from "./utils/helpers.js";
 
 
 import "dotenv/config";
 
 const app = express();
-const hbs = create({});
+const hbs = create({helpers});
 const PORT = process.env.PORT || 3001;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
