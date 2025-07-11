@@ -1,0 +1,33 @@
+<!-- views/dashboard.handlebars -->
+
+<div class="dashboard-container">
+    <h1>Welcome, {{user.name}}!</h1>
+    
+    <section class="profile-section">
+        <h2>Your Profile</h2>
+        <ul>
+            <li><strong>Email:</strong> {{user.email}}</li>
+            <li><strong>Phone:</strong> {{user.phone}}</li>
+            <li><strong>Location:</strong> {{user.location}}</li>
+            <li><strong>Skills:</strong> {{#each user.skills}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</li>
+        </ul>
+        <a href="/profile/edit" class="btn">Edit Profile</a>
+    </section>
+
+    <section class="volunteer-activity">
+        <h2>Your Volunteer Activities</h2>
+        {{#if activities.length}}
+            <ul>
+                {{#each activities}}
+                    <li>
+                        <strong>{{name}}</strong> - {{date}}<br>
+                        <span>{{description}}</span>
+                    </li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <p>You have not signed up for any activities yet.</p>
+        {{/if}}
+        <a href="/activities" class="btn">Browse Activities</a>
+    </section>
+</div>
