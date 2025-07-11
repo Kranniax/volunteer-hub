@@ -65,7 +65,7 @@ var volunteerSignupHandler = async function (event) {
     signupButton.disabled = false; // Re-enable on error
   }
 };
-
+/*
 // Helper function to get an array of volunteer names.
 function volunteerProfileHandler(signups) {
   const volunteerNames = signups.map(
@@ -104,5 +104,5 @@ var init = async () => {
   }
 };
 
-init();
+// init()*/
 signupForm.addEventListener("submit", volunteerSignupHandler);

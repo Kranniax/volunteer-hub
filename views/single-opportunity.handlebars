@@ -23,7 +23,11 @@
     {{/if}}
     <div class="volunteers-container">
         <h3>Volunteers</h3>
-        <ul class="volunteer-list"></ul>
+        <ul class="volunteer-list">
+            {{#each opportunity.volunteers}}
+            <li class="volunteer-list-item">{{this.firstName}} {{this.lastName}}</li>
+            {{/each}}
+        </ul>
     </div>
         
     <p><strong>Spots Available:</strong> {{opportunity.spotsAvailable}}</p>

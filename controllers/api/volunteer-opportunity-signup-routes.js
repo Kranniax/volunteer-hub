@@ -12,6 +12,24 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+// Get a signup from a logged in user.
+router.get("/find", async (req, res) => {
+  const { opportunity_id, volunteer_id } = req.query;
+  try {
+    const signupResponse = await Signup.findOne({
+      where: {
+        opportunity_id,
+        volunteer_id,
+      },
+    });
+    if (!signupResponse) {
+      return res.status(404).json({ message: "Signup not found" });
+    }
+    res.status(200).json(signupResponse);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Get all volunteers who signed up for a specific opportunity.
 router.get("/opportunity/:id", async (req, res) => {
