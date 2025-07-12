@@ -1,33 +1,38 @@
 <!-- views/dashboard.handlebars -->
 
 <div class="dashboard-container">
-    <h1>Welcome, {{user.name}}!</h1>
+    <h1>Welcome, {{volunteerProfile.firstName}} {{volunteerProfile.lastName}}!</h1>
     
     <section class="profile-section">
         <h2>Your Profile</h2>
         <ul>
-            <li><strong>Email:</strong> {{user.email}}</li>
-            <li><strong>Phone:</strong> {{user.phone}}</li>
-            <li><strong>Location:</strong> {{user.location}}</li>
+            <li><strong>Email:</strong> {{extra.email}}</li>
+            <li><strong>Phone:</strong> {{volunteerProfile.phone}}</li>
+            <li><strong>Location:</strong> {{volunteerProfile.address}}</li>
             <li><strong>Skills:</strong> {{#each user.skills}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</li>
         </ul>
         <a href="/profile/edit" class="btn">Edit Profile</a>
     </section>
 
     <section class="volunteer-activity">
-        <h2>Your Volunteer Activities</h2>
-        {{#if activities.length}}
+        <h2>Your Volunteer Opportunities</h2>
+        {{#if opportunities.length}}
             <ul>
-                {{#each activities}}
+                {{#each opportunities}}
                     <li>
-                        <strong>{{name}}</strong> - {{date}}<br>
-                        <span>{{description}}</span>
+                        <a href="/opportunities/{{this.id}}">
+                        <strong>{{this.title}}</strong> - {{this.date}}<br>
+                        </a>
+                        <p>{{this.description}}</p>
+                        
                     </li>
                 {{/each}}
             </ul>
         {{else}}
-            <p>You have not signed up for any activities yet.</p>
+            <p>You have not signed up for any volunteer opportunities yet.</p>
         {{/if}}
-        <a href="/activities" class="btn">Browse Activities</a>
+        <a href="/opportunities" class="btn">Browse Opportunities</a>
     </section>
 </div>
+
+<script src="/js/dashboard.js"></script>
