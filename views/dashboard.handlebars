@@ -9,8 +9,9 @@
             <li><strong>Email:</strong> {{extra.email}}</li>
             <li><strong>Phone:</strong> {{volunteerProfile.phone}}</li>
             <li><strong>Location:</strong> {{volunteerProfile.address}}</li>
-            <li><strong>Skills:</strong> {{#each user.skills}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</li>
+            <li><strong>Bio:</strong> {{volunteerProfile.bio}}</li>
         </ul>
+        <img src="{{volunteerProfile.profileImage}}" alt="" srcset="">
         <a href="/profile/edit" class="btn">Edit Profile</a>
     </section>
 
