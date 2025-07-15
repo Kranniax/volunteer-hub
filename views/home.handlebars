@@ -1,31 +1,134 @@
-<section>
-    <h2>Find Volunteer Opportunities</h2>
-    <p>Connect with local organizations and make a difference in your community.</p>
-    <a href="/opportunities" class="btn">Browse All Opportunities</a>
+<!-- Hero Section -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Find Volunteer Opportunities</h1>
+                <p class="lead mb-4">Connect with local organizations and make a difference in your community.</p>
+                <a href="/opportunities" class="btn btn-light btn-lg">
+                    <i class="bi bi-search me-2"></i>Browse All Opportunities
+                </a>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="bi bi-people-fill" style="font-size: 8rem; opacity: 0.7;"></i>
+            </div>
+        </div>
+    </div>
 </section>
 
-<section>
-    <h2>How It Works</h2>
-    <ol>
-        <li>Sign up or log in to your account.</li>
-        <li>Browse and apply for volunteer opportunities.</li>
-        <li>Track your impact and connect with others.</li>
-    </ol>
+<!-- How It Works Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-5">How It Works</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="text-primary mb-3">
+                                    <i class="bi bi-person-plus-fill" style="font-size: 3rem;"></i>
+                                </div>
+                                <h5 class="card-title">1. Sign Up</h5>
+                                <p class="card-text">Create your account and set up your volunteer profile.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="text-primary mb-3">
+                                    <i class="bi bi-search" style="font-size: 3rem;"></i>
+                                </div>
+                                <h5 class="card-title">2. Browse & Apply</h5>
+                                <p class="card-text">Find opportunities that match your interests and skills.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="text-primary mb-3">
+                                    <i class="bi bi-graph-up" style="font-size: 3rem;"></i>
+                                </div>
+                                <h5 class="card-title">3. Track Impact</h5>
+                                <p class="card-text">Monitor your volunteer hours and connect with others.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
-<section>
-    <h2>Featured Opportunities</h2>
-    {{#if opportunities.length}}
-        <ul>
-            {{#each opportunities}}
-                <li>
-                    <h3><a href="/opportunities/{{this.id}}">{{this.title}}</a></h3>
-                    <p>{{this.description}}</p>
-                    <p><strong>Location:</strong> {{this.location}}</p>
-                    <p><strong>Date:</strong> {{this.date}}</p>
-                </li>
-            {{/each}}
-        </ul>
-    {{else}}
-        <p>No opportunities available at this time.</p>
-    {{/if}}
+
+<!-- Featured Opportunities Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-5">Featured Opportunities</h2>
+
+                {{#if opportunities.length}}
+                <div class="row g-4">
+                    {{#each opportunities}}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="/opportunities/{{this.id}}" class="text-decoration-none">
+                                        {{this.title}}
+                                    </a>
+                                </h5>
+                                <p class="card-text text-muted mb-3">{{this.description}}</p>
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-geo-alt me-1"></i>
+                                        <strong>Location:</strong> {{this.location}}
+                                    </small>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted">
+                                        <i class="bi bi-calendar-event me-1"></i>
+                                        <strong>Date:</strong> {{this.date}}
+                                    </small>
+                                </div>
+                                <a href="/opportunities/{{this.id}}" class="btn btn-primary btn-sm">
+                                    Learn More
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="/opportunities" class="btn btn-outline-primary">
+                        View All Opportunities
+                    </a>
+                </div>
+                {{else}}
+                <div class="text-center py-5">
+                    <i class="bi bi-info-circle text-muted" style="font-size: 3rem;"></i>
+                    <p class="lead text-muted mt-3">No opportunities available at this time.</p>
+                    <p class="text-muted">Check back soon for new volunteer opportunities!</p>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-4">Ready to Make a Difference?</h2>
+                <p class="lead mb-4">Join thousands of volunteers making an impact in their communities.</p>
+                <a href="/signup" class="btn btn-light btn-lg me-3">Get Started Today</a>
+                <a href="/about" class="btn btn-outline-light btn-lg">Learn More</a>
+            </div>
+        </div>
+    </div>
 </section>

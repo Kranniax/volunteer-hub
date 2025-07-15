@@ -6,12 +6,12 @@ import {
   Signup,
   Organization,
 } from "../models/index.js";
-// import { json } from "sequelize";
+import { withAuth } from "../utils/auth.js";
 
 const router = Router();
 
 // Get loggedIn user profile
-router.get("/", async (req, res) => {
+router.get("/", withAuth, async (req, res) => {
   try {
     const profileResponse = await User.findOne({
       where: {
@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
             {
               model: Opportunity,
               through: Signup, // hides join table fields if you want
-            //   order: [["createdAt", "DESC"]],
+              //   order: [["createdAt", "DESC"]],
               attributes: [
                 "id",
                 "organization_id",
@@ -57,6 +57,28 @@ router.get("/", async (req, res) => {
       opportunities: volunteerProfile.opportunities,
       loggedIn: req.session.loggedIn,
       extra,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/edit-volunteer-profile", withAuth, async (req, res) => {
+  try {
+    const profileResponse = await Volunteer.findOne({
+      where: {
+        user_id: req.session.user_id,
+      },
+    });
+
+    if (!profileResponse) {
+      res.status(404).json({ message: "Cannot locate volunteer profile" });
+      return;
+    }
+    const profile = profileResponse.get({ plain: true });
+    res.render("edit-volunteer-profile", {
+      volunteer: profile,
+      loggedIn: req.session.loggedIn,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
