@@ -7,4 +7,11 @@ export default {
       return false;
     }
   },
+  checkRole: (role) => {
+    if (role === "organization") {
+      return true;
+    } else {
+      return false;
+    }
+  },
 };

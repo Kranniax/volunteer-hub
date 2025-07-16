@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { Opportunity, Organization, Signup, Volunteer } from "../models/index.js";
+import {
+  Opportunity,
+  Organization,
+  Signup,
+  Volunteer,
+} from "../models/index.js";
 import { loggedInAuth, withAuth } from "../utils/auth.js";
 
 const router = Router();
@@ -12,7 +17,11 @@ router.get("/", async (req, res) => {
     );
     // console.log(req.session);
 
-    res.render("home", { opportunities, loggedIn: req.session.loggedIn });
+    res.render("home", {
+      opportunities,
+      loggedIn: req.session.loggedIn,
+      role: req.session.role,
+    });
   } catch (err) {
     res.status(500).json({ error: err });
   }

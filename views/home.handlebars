@@ -1,3 +1,5 @@
+
+{{#unless (checkRole role)}}
 <!-- Hero Section -->
 <section class="bg-primary text-white py-5">
     <div class="container">
@@ -118,7 +120,6 @@
         </div>
     </div>
 </section>
-
 <!-- Call to Action Section -->
 <section class="py-5 bg-primary text-white">
     <div class="container">
@@ -132,3 +133,83 @@
         </div>
     </div>
 </section>
+{{/unless}}
+
+{{#if (checkRole role)}}
+<!-- Hero Section for Organizations -->
+<section class="bg-success text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Connect with Volunteers</h1>
+                <p class="lead mb-4">Post opportunities and find passionate volunteers for your organization.</p>
+                <a href="/opportunities/new" class="btn btn-light btn-lg">
+                    <i class="bi bi-plus-circle me-2"></i>Post an Opportunity
+                </a>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="bi bi-building" style="font-size: 8rem; opacity: 0.7;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section for Organizations -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-5">How It Works for Organizations</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="text-success mb-3">
+                                    <i class="bi bi-person-badge-fill" style="font-size: 3rem;"></i>
+                                </div>
+                                <h5 class="card-title">1. Register Your Organization</h5>
+                                <p class="card-text">Create an account and set up your organization profile.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="text-success mb-3">
+                                    <i class="bi bi-clipboard-plus" style="font-size: 3rem;"></i>
+                                </div>
+                                <h5 class="card-title">2. Post Opportunities</h5>
+                                <p class="card-text">Share volunteer opportunities and reach a wider audience.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="text-success mb-3">
+                                    <i class="bi bi-people" style="font-size: 3rem;"></i>
+                                </div>
+                                <h5 class="card-title">3. Connect & Manage</h5>
+                                <p class="card-text">Review applications, connect with volunteers, and track engagement.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Call to Action for Organizations -->
+<section class="py-5 bg-success text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-4">Ready to Find Volunteers?</h2>
+                <p class="lead mb-4">Post your opportunities and connect with passionate individuals eager to help.</p>
+                <a href="/opportunities/new" class="btn btn-light btn-lg me-3">Post an Opportunity</a>
+                <a href="/about" class="btn btn-outline-light btn-lg">Learn More</a>
+            </div>
+        </div>
+    </div>
+</section>
+{{/if}}

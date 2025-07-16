@@ -1,8 +1,44 @@
-<!-- views/dashboard.handlebars -->
 
-<div class="dashboard-container">
-    <h1>Welcome, {{volunteerProfile.firstName}} {{volunteerProfile.lastName}}!</h1>
+{{#if (checkRole role)}}
+<div class="dashboard-container organization-dashboard">
+    <h1>Welcome, {{organizationProfile.name}}!</h1>
     
+    <section class="profile-section">
+        <h2>Organization Profile</h2>
+        <ul>
+            <li><strong>Email:</strong> {{extra.email}}</li>
+            <li><strong>Phone:</strong> {{organizationProfile.phone}}</li>
+            <li><strong>Location:</strong> {{organizationProfile.address}}</li>
+            <li><strong>Description:</strong> {{organizationProfile.description}}</li>
+        </ul>
+        <img src="{{organizationProfile.logoImage}}" alt="Organization Logo" srcset="">
+        <a href="/dashboard/edit-organization-profile" class="btn">Edit Organization Profile</a>
+    </section>
+
+    <section class="organization-opportunities">
+        <h2>Your Posted Opportunities</h2>
+        {{#if postedOpportunities.length}}
+            <ul>
+                {{#each postedOpportunities}}
+                    <li>
+                        <a href="/opportunities/{{this.id}}">
+                        <strong>{{this.title}}</strong> - {{this.date}}<br>
+                        </a>
+                        <p>{{this.description}}</p>
+                    </li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <p>You have not posted any volunteer opportunities yet.</p>
+        {{/if}}
+        <a href="/opportunities/new" class="btn">Post New Opportunity</a>
+    </section>
+</div>
+{{else}}
+<!-- views/dashboard.handlebars -->
+<div class="dashboard-container">
+    <h1>Welcome, {{organizationProfile.name}}!</h1>
+
     <section class="profile-section">
         <h2>Your Profile</h2>
         <ul>
@@ -18,22 +54,23 @@
     <section class="volunteer-activity">
         <h2>Your Volunteer Opportunities</h2>
         {{#if opportunities.length}}
-            <ul>
-                {{#each opportunities}}
-                    <li>
-                        <a href="/opportunities/{{this.id}}">
-                        <strong>{{this.title}}</strong> - {{this.date}}<br>
-                        </a>
-                        <p>{{this.description}}</p>
-                        
-                    </li>
-                {{/each}}
-            </ul>
+        <ul>
+            {{#each opportunities}}
+            <li>
+                <a href="/opportunities/{{this.id}}">
+                    <strong>{{this.title}}</strong> - {{this.date}}<br>
+                </a>
+                <p>{{this.description}}</p>
+
+            </li>
+            {{/each}}
+        </ul>
         {{else}}
-            <p>You have not signed up for any volunteer opportunities yet.</p>
+        <p>You have not signed up for any volunteer opportunities yet.</p>
         {{/if}}
         <a href="/opportunities" class="btn">Browse Opportunities</a>
     </section>
 </div>
 
+{{/if}}
 <script src="/js/dashboard.js"></script>

@@ -13,51 +13,90 @@ const router = Router();
 // Get loggedIn user profile
 router.get("/", withAuth, async (req, res) => {
   try {
-    const profileResponse = await User.findOne({
-      where: {
-        id: req.session.user_id,
-      },
-      attributes: { exclude: ["password"] },
-      include: [
-        {
-          model: Volunteer,
-          as: "volunteerProfile",
-          include: [
-            {
-              model: Opportunity,
-              through: Signup, // hides join table fields if you want
-              //   order: [["createdAt", "DESC"]],
-              attributes: [
-                "id",
-                "organization_id",
-                "title",
-                "description",
-                "date",
-              ],
-              include: [
-                {
-                  model: Organization,
-                  as: "organization", // use the alias from your association
-                  attributes: ["id", "name"],
-                },
-              ],
-            },
-          ],
+    if (req.session.role === "volunteer") {
+      const profileResponse = await User.findOne({
+        where: {
+          id: req.session.user_id,
         },
-      ],
-    });
-    if (!profileResponse) {
-      res.status(404).json({ message: "Cannot locate this user" });
-      return;
+        attributes: { exclude: ["password"] },
+        include: [
+          {
+            model: Volunteer,
+            as: "volunteerProfile",
+            include: [
+              {
+                model: Opportunity,
+                through: Signup, // hides join table fields if you want
+                //   order: [["createdAt", "DESC"]],
+                attributes: [
+                  "id",
+                  "organization_id",
+                  "title",
+                  "description",
+                  "date",
+                ],
+                include: [
+                  {
+                    model: Organization,
+                    as: "organization", // use the alias from your association
+                    attributes: ["id", "name"],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+      if (!profileResponse) {
+        res.status(404).json({ message: "Cannot locate this user" });
+        return;
+      }
+      // res.status(200).json(profileResponse);
+      const { volunteerProfile, ...extra } = profileResponse.get({
+        plain: true,
+      });
+      res.render("dashboard", {
+        volunteerProfile,
+        opportunities: volunteerProfile.opportunities,
+        loggedIn: req.session.loggedIn,
+        role: req.session.role,
+        extra,
+      });
+    } else {
+      const profileResponse = await User.findOne({
+        where: {
+          id: req.session.user_id,
+        },
+        attributes: { exclude: ["password"] },
+        include: [
+          {
+            model: Organization,
+            as: "organizationProfile",
+            include: [
+              {
+                model: Opportunity,
+                as: "opportunities",
+                attributes: ["id", "title", "description", "date"],
+              },
+            ],
+          },
+        ],
+      });
+      if (!profileResponse) {
+        res.status(404).json({ message: "Cannot locate this organization" });
+        return;
+      }
+      const { organizationProfile, ...extra } = profileResponse.get({
+        plain: true,
+      });
+      res.render("dashboard", {
+        organizationProfile,
+        postedOpportunities: organizationProfile.opportunities,
+        loggedIn: req.session.loggedIn,
+        role: req.session.role,
+        extra,
+      });
     }
-    // res.status(200).json(profileResponse);
-    const { volunteerProfile, ...extra } = profileResponse.get({ plain: true });
-    res.render("dashboard", {
-      volunteerProfile,
-      opportunities: volunteerProfile.opportunities,
-      loggedIn: req.session.loggedIn,
-      extra,
-    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
