@@ -81,6 +81,14 @@ router.get("/", withAuth, async (req, res) => {
             ],
           },
         ],
+        order: [
+          [
+            { model: Organization, as: "organizationProfile" },
+            { model: Opportunity, as: "opportunities" },
+            "createdAt",
+            "DESC",
+          ],
+        ],
       });
       if (!profileResponse) {
         res.status(404).json({ message: "Cannot locate this organization" });
@@ -101,7 +109,7 @@ router.get("/", withAuth, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
+// edit volunteer profile
 router.get("/edit-volunteer-profile", withAuth, async (req, res) => {
   try {
     const profileResponse = await Volunteer.findOne({
@@ -122,6 +130,43 @@ router.get("/edit-volunteer-profile", withAuth, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+// edit a organization profile
+router.get("/edit-organization-profile", withAuth,  async (req, res) => {
+  try {
+    const profileResponse = await Organization.findOne({
+      where: {
+        user_id: req.session.user_id,
+      },
+    });
+
+    if (!profileResponse) {
+      res.status(404).json({ message: "Cannot locate organization profile" });
+      return;
+    }
+
+    // res.json(profileResponse);
+    const profile = profileResponse.get({ plain: true });
+    res.render("edit-organization-profile", {
+      organization: profile,
+      loggedIn: req.session.loggedIn,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// post a new volunteer
+router.get("/opportunities/new", withAuth, async (req, res) => {
+  if (req.session.role !== "organization") {
+    return res
+      .status(403)
+      .json({ message: "Only organizations can create opportunities." });
+  }
+  res.render("new-opportunity", {
+    loggedIn: req.session.loggedIn,
+    role: req.session.role,
+  });
 });
 
 export default router;

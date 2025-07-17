@@ -36,8 +36,10 @@ router.get("/opportunities", async (req, res) => {
           model: Organization,
           as: "organization",
           attributes: ["name"],
+          order: [["createdAt", "DESC"]],
         },
       ],
+      order: [["createdAt", "DESC"]],
     });
     const opportunities = dbOpportunities.map((opportunity) =>
       opportunity.get({ plain: true })

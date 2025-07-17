@@ -14,7 +14,7 @@
         <img src="{{organizationProfile.logoImage}}" alt="Organization Logo" srcset="">
         <a href="/dashboard/edit-organization-profile" class="btn">Edit Organization Profile</a>
     </section>
-
+    <a href="dashboard/opportunities/new" class="btn">Post New Opportunity</a>
     <section class="organization-opportunities">
         <h2>Your Posted Opportunities</h2>
         {{#if postedOpportunities.length}}
@@ -31,7 +31,7 @@
         {{else}}
             <p>You have not posted any volunteer opportunities yet.</p>
         {{/if}}
-        <a href="/opportunities/new" class="btn">Post New Opportunity</a>
+        
     </section>
 </div>
 {{else}}
