@@ -36,30 +36,28 @@ const newOpportunityHandler = async (event) => {
   };
 
   try {
-
     // Get current organization id
     const profileResponse = await fetch(profileEndpoint);
     if (!profileResponse.ok) {
       throw new Error(`Response status: ${profileResponse.status}`);
     }
-    const organizationProfile  = await profileResponse.json();
-    // const organization_id = organizationProfile.id;
-    console.log(organizationProfile);
-    
+    const { organizationProfile } = await profileResponse.json();
+    opportunity.organization_id = organizationProfile.id;
+   
 
-    // const response = await fetch(opportunityEndPoint, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(opportunity),
-    // });
-    // if (response.ok) {
-    //   window.location.replace("/dashboard");
-    // } else {
-    //   const errorData = await response.json();
-    //   alert(errorData.message || "Failed to create opportunity.");
-    // }
+    const response = await fetch(opportunityEndPoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(opportunity),
+    });
+    if (response.ok) {
+      window.location.replace("/dashboard");
+    } else {
+      const errorData = await response.json();
+      alert(errorData.message || "Failed to create opportunity.");
+    }
   } catch (error) {
     alert("Network error: " + error.message);
   }

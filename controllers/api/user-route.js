@@ -18,22 +18,43 @@ router.get("/", async (req, res) => {
 // Get a user profile
 router.get("/profile", async (req, res) => {
   try {
-    const response = await User.findOne({
-      where: {
-        id: req.session.user_id,
-      },
-      include: [
-        {
-          model: Volunteer,
-          as: "volunteerProfile",
+    if (req.session.role === "volunteer") {
+      const response = await User.findOne({
+        where: {
+          id: req.session.user_id,
         },
-      ],
-    });
-    if (!response) {
-      res.status(404).json({ message: "Cannot locate this user" });
-      return;
+        include: [
+          {
+            model: Volunteer,
+            as: "volunteerProfile",
+          },
+        ],
+        attributes: { exclude: ["password"] },
+      });
+      if (!response) {
+        res.status(404).json({ message: "Cannot locate this user" });
+        return;
+      }
+      res.status(200).json(response);
+    } else {
+      const response = await User.findOne({
+        where: {
+          id: req.session.user_id,
+        },
+        include: [
+          {
+            model: Organization,
+            as: "organizationProfile",
+          },
+        ],
+        attributes: { exclude: ["password"] },
+      });
+      if (!response) {
+        res.status(404).json({ message: "Cannot locate this user" });
+        return;
+      }
+      res.status(200).json(response);
     }
-    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
