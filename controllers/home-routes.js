@@ -74,6 +74,7 @@ router.get("/opportunities/:id", async (req, res) => {
       opportunity,
       loggedIn: req.session.loggedIn,
       loggedInUserId: req.session.user_id,
+      loggedInRole: req.session.role,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
