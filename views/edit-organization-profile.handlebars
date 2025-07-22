@@ -1,0 +1,49 @@
+<form data-organization-id="{{organization.id}}" id="edit-organization-form" method="POST">
+  <h2>Edit Organization Profile</h2>
+  <div>
+    <label for="name">Organization Name</label>
+    <input type="text" id="name" name="name" value="{{organization.name}}" required>
+  </div>
+  <div>
+    <label for="description">Description</label>
+    <textarea id="description" name="description" required>{{organization.description}}</textarea>
+  </div>
+  <div>
+    <label for="mission">Mission Statement</label>
+    <textarea id="mission" name="mission">{{organization.mission}}</textarea>
+  </div>
+  <div>
+    <label for="phone">Phone</label>
+    <input type="text" id="phone" name="phone" value="{{organization.phone}}">
+  </div>
+  <div>
+    <label for="website">Website</label>
+    <input type="url" id="website" name="website" value="{{organization.website}}">
+  </div>
+  <div>
+    <label for="address">Address</label>
+    <textarea id="address" name="address">{{organization.address}}</textarea>
+  </div>
+  <div>
+    <label for="latitude">Latitude</label>
+    <input type="number" step="any" id="latitude" name="latitude" value="{{organization.latitude}}">
+  </div>
+  <div>
+    <label for="longitude">Longitude</label>
+    <input type="number" step="any" id="longitude" name="longitude" value="{{organization.longitude}}">
+  </div>
+  <div>
+    <label for="contactPerson">Contact Person</label>
+    <input type="text" id="contactPerson" name="contactPerson" value="{{organization.contactPerson}}">
+  </div>
+  <div>
+    <label for="logoImage">Logo Image URL</label>
+    <input type="text" id="logoImage" name="logoImage" value="{{organization.logoImage}}">
+  </div>
+  <div>
+    <label for="isVerified">Verified</label>
+    <input type="checkbox" id="isVerified" name="isVerified" {{#if organization.isVerified}}checked{{/if}}>
+  </div>
+  <button type="submit">Save Changes</button>
+</form>
+<script src="/js/edit-organization-profile.js"></script>
