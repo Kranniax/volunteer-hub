@@ -1,77 +1,450 @@
-
 {{#if (checkRole role)}}
-<div class="dashboard-container organization-dashboard">
-    <h1>Welcome, {{organizationProfile.name}}!</h1>
-    
-    <section class="profile-section">
-        <h2>Organization Profile</h2>
-        <ul>
-            <li><strong>Email:</strong> {{extra.email}}</li>
-            <li><strong>Phone:</strong> {{organizationProfile.phone}}</li>
-            <li><strong>Location:</strong> {{organizationProfile.address}}</li>
-            <li><strong>Description:</strong> {{organizationProfile.description}}</li>
-            <li><strong>Mission Statement:</strong> {{organizationProfile.mission}}</li>
-        </ul>
-        <img src="{{organizationProfile.logoImage}}" alt="Organization Logo" srcset="">
-        <a href="/dashboard/edit-organization-profile" class="btn">Edit Organization Profile</a>
-    </section>
-    <a href="dashboard/opportunities/new" class="btn">Post New Opportunity</a>
-    <section class="organization-opportunities">
-        <h2>Your Posted Opportunities</h2>
-        {{#if postedOpportunities.length}}
-            <ul>
-                {{#each postedOpportunities}}
-                    <li>
-                        <a href="/opportunities/{{this.id}}">
-                        <strong>{{this.title}}</strong> - {{this.date}}<br>
+<!-- Organization Dashboard -->
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 col-xl-2 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-building text-primary me-2" style="font-size: 1.5rem;"></i>
+                        <span class="fw-bold">Organization</span>
+                    </div>
+                    <nav class="nav nav-pills flex-column">
+                        <a class="nav-link active" href="#profile" data-bs-toggle="pill">
+                            <i class="bi bi-person-circle me-2"></i>Profile
                         </a>
-                        <p>{{this.description}}</p>
-                    </li>
-                {{/each}}
-            </ul>
-        {{else}}
-            <p>You have not posted any volunteer opportunities yet.</p>
-        {{/if}}
-        
-    </section>
-</div>
-{{else}}
-<!-- views/dashboard.handlebars -->
-<div class="dashboard-container">
-    <h1>Welcome, {{organizationProfile.name}}!</h1>
+                        <a class="nav-link" href="#opportunities" data-bs-toggle="pill">
+                            <i class="bi bi-calendar-check me-2"></i>Opportunities
+                        </a>
+                        <a class="nav-link" href="#analytics" data-bs-toggle="pill">
+                            <i class="bi bi-graph-up me-2"></i>Analytics
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
 
-    <section class="profile-section">
-        <h2>Your Profile</h2>
-        <ul>
-            <li><strong>Email:</strong> {{extra.email}}</li>
-            <li><strong>Phone:</strong> {{volunteerProfile.phone}}</li>
-            <li><strong>Location:</strong> {{volunteerProfile.address}}</li>
-            <li><strong>Bio:</strong> {{volunteerProfile.bio}}</li>
-        </ul>
-        <img src="{{volunteerProfile.profileImage}}" alt="" srcset="">
-        <a href="/dashboard/edit-volunteer-profile" class="btn">Edit Profile</a>
-    </section>
-
-    <section class="volunteer-activity">
-        <h2>Your Volunteer Opportunities</h2>
-        {{#if opportunities.length}}
-        <ul>
-            {{#each opportunities}}
-            <li>
-                <a href="/opportunities/{{this.id}}">
-                    <strong>{{this.title}}</strong> - {{this.date}}<br>
+        <!-- Main Content -->
+        <div class="col-lg-9 col-xl-10">
+            <!-- Welcome Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h2 mb-1">Welcome, {{organizationProfile.name}}!</h1>
+                    <p class="text-muted mb-0">Manage your volunteer opportunities and profile</p>
+                </div>
+                <a href="dashboard/opportunities/new" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Post New Opportunity
                 </a>
-                <p>{{this.description}}</p>
+            </div>
 
-            </li>
-            {{/each}}
-        </ul>
-        {{else}}
-        <p>You have not signed up for any volunteer opportunities yet.</p>
-        {{/if}}
-        <a href="/opportunities" class="btn">Browse Opportunities</a>
-    </section>
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Profile Tab -->
+                <div class="tab-pane fade show active" id="profile">
+                    <div class="row g-4">
+                        <!-- Profile Card -->
+                        <div class="col-xl-8">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white border-bottom">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title mb-0">
+                                            <i class="bi bi-building me-2 text-primary"></i>Organization Profile
+                                        </h5>
+                                        <a href="/dashboard/edit-organization-profile"
+                                            class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-pencil me-1"></i>Edit Profile
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-envelope text-muted me-2"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Email</small>
+                                                    <span>{{extra.email}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-telephone text-muted me-2"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Phone</small>
+                                                    <span>{{organizationProfile.phone}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-start">
+                                                <i class="bi bi-geo-alt text-muted me-2 mt-1"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Location</small>
+                                                    <span>{{organizationProfile.address}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-start">
+                                                <i class="bi bi-info-circle text-muted me-2 mt-1"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Description</small>
+                                                    <span>{{organizationProfile.description}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-start">
+                                                <i class="bi bi-bullseye text-muted me-2 mt-1"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Mission Statement</small>
+                                                    <span>{{organizationProfile.mission}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logo Card -->
+                        <div class="col-xl-4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white border-bottom">
+                                    <h6 class="card-title mb-0">Organization Logo</h6>
+                                </div>
+                                <div class="card-body text-center">
+                                    {{#if organizationProfile.logoImage}}
+                                    <img src="{{organizationProfile.logoImage}}" alt="Organization Logo"
+                                        class="img-fluid rounded" style="max-height: 150px;">
+                                    {{else}}
+                                    <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                        style="height: 150px;">
+                                        <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                                    </div>
+                                    <p class="text-muted mt-2 mb-0">No logo uploaded</p>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Opportunities Tab -->
+                <div class="tab-pane fade" id="opportunities">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-bottom">
+                            <h5 class="card-title mb-0">
+                                <i class="bi bi-calendar-check me-2 text-primary"></i>Your Posted Opportunities
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            {{#if postedOpportunities.length}}
+                            <div class="row g-3">
+                                {{#each postedOpportunities}}
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="card border h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title">
+                                                <a href="/opportunities/{{this.id}}" class="text-decoration-none">
+                                                    {{this.title}}
+                                                </a>
+                                            </h6>
+                                            <p class="card-text text-muted small">{{this.description}}</p>
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar-event me-1"></i>{{this.date}}
+                                            </small>
+                                        </div>
+                                        <div class="card-footer bg-white border-top-0">
+                                            <div class="btn-group btn-group-sm w-100">
+                                                <a href="/opportunities/{{this.id}}"
+                                                    class="btn btn-outline-primary">View</a>
+                                                <a href="/dashboard/opportunities/{{this.id}}/edit"
+                                                    class="btn btn-outline-secondary">Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div>
+                            {{else}}
+                            <div class="text-center py-4">
+                                <i class="bi bi-calendar-x text-muted" style="font-size: 3rem;"></i>
+                                <p class="text-muted mt-3 mb-0">You have not posted any volunteer opportunities yet.</p>
+                            </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div class="tab-pane fade" id="analytics">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-calendar-check text-primary" style="font-size: 2rem;"></i>
+                                    <h3 class="mt-2 mb-1">{{postedOpportunities.length}}</h3>
+                                    <p class="text-muted mb-0">Posted Opportunities</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-people text-success" style="font-size: 2rem;"></i>
+                                    <h3 class="mt-2 mb-1">0</h3>
+                                    <p class="text-muted mb-0">Active Volunteers</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-clock text-info" style="font-size: 2rem;"></i>
+                                    <h3 class="mt-2 mb-1">0</h3>
+                                    <p class="text-muted mb-0">Total Hours</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-star text-warning" style="font-size: 2rem;"></i>
+                                    <h3 class="mt-2 mb-1">5.0</h3>
+                                    <p class="text-muted mb-0">Average Rating</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+{{else}}
+<!-- Volunteer Dashboard -->
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 col-xl-2 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-person-circle text-primary me-2" style="font-size: 1.5rem;"></i>
+                        <span class="fw-bold">Volunteer</span>
+                    </div>
+                    <nav class="nav nav-pills flex-column">
+                        <a class="nav-link active" href="#vol-profile" data-bs-toggle="pill">
+                            <i class="bi bi-person me-2"></i>Profile
+                        </a>
+                        <a class="nav-link" href="#vol-activities" data-bs-toggle="pill">
+                            <i class="bi bi-calendar-heart me-2"></i>My Activities
+                        </a>
+                        <a class="nav-link" href="#vol-stats" data-bs-toggle="pill">
+                            <i class="bi bi-trophy me-2"></i>My Impact
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9 col-xl-10">
+            <!-- Welcome Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h2 mb-1">Welcome, {{volunteerProfile.firstName}} {{volunteerProfile.lastName}}!</h1>
+                    <p class="text-muted mb-0">Track your volunteer activities and impact</p>
+                </div>
+                <a href="/opportunities" class="btn btn-primary">
+                    <i class="bi bi-search me-2"></i>Browse Opportunities
+                </a>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Profile Tab -->
+                <div class="tab-pane fade show active" id="vol-profile">
+                    <div class="row g-4">
+                        <!-- Profile Card -->
+                        <div class="col-xl-8">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white border-bottom">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title mb-0">
+                                            <i class="bi bi-person me-2 text-primary"></i>Your Profile
+                                        </h5>
+                                        <a href="/dashboard/edit-volunteer-profile"
+                                            class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-pencil me-1"></i>Edit Profile
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-envelope text-muted me-2"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Email</small>
+                                                    <span>{{extra.email}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-telephone text-muted me-2"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Phone</small>
+                                                    <span>{{volunteerProfile.phone}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-start">
+                                                <i class="bi bi-geo-alt text-muted me-2 mt-1"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Location</small>
+                                                    <span>{{volunteerProfile.address}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-start">
+                                                <i class="bi bi-chat-text text-muted me-2 mt-1"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Bio</small>
+                                                    <span>{{volunteerProfile.bio}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Image Card -->
+                        <div class="col-xl-4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white border-bottom">
+                                    <h6 class="card-title mb-0">Profile Picture</h6>
+                                </div>
+                                <div class="card-body text-center">
+                                    {{#if volunteerProfile.profileImage}}
+                                    <img src="{{volunteerProfile.profileImage}}" alt="Profile Picture"
+                                        class="img-fluid rounded-circle"
+                                        style="width: 150px; height: 150px; object-fit: cover;">
+                                    {{else}}
+                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto"
+                                        style="width: 150px; height: 150px;">
+                                        <i class="bi bi-person text-muted" style="font-size: 4rem;"></i>
+                                    </div>
+                                    <p class="text-muted mt-2 mb-0">No photo uploaded</p>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activities Tab -->
+                <div class="tab-pane fade" id="vol-activities">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-bottom">
+                            <h5 class="card-title mb-0">
+                                <i class="bi bi-calendar-heart me-2 text-primary"></i>Your Volunteer Opportunities
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            {{#if opportunities.length}}
+                            <div class="row g-3">
+                                {{#each opportunities}}
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="card border h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title">
+                                                <a href="/opportunities/{{this.id}}" class="text-decoration-none">
+                                                    {{this.title}}
+                                                </a>
+                                            </h6>
+                                            <p class="card-text text-muted small">{{this.description}}</p>
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar-event me-1"></i>{{this.date}}
+                                            </small>
+                                        </div>
+                                        <div class="card-footer bg-white border-top-0">
+                                            <a href="/opportunities/{{this.id}}"
+                                                class="btn btn-outline-primary btn-sm w-100">
+                                                View Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div>
+                            {{else}}
+                            <div class="text-center py-4">
+                                <i class="bi bi-calendar-x text-muted" style="font-size: 3rem;"></i>
+                                <p class="text-muted mt-3 mb-2">You have not signed up for any volunteer opportunities
+                                    yet.</p>
+                                <a href="/opportunities" class="btn btn-primary">
+                                    <i class="bi bi-search me-2"></i>Find Opportunities
+                                </a>
+                            </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Impact Stats Tab -->
+                <div class="tab-pane fade" id="vol-stats">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-calendar-check text-primary" style="font-size: 2rem;"></i>
+                                    <h3 class="mt-2 mb-1">{{opportunities.length}}</h3>
+                                    <p class="text-muted mb-0">Opportunities Joined</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-clock text-success" style="font-size: 2rem;"></i>
+                                    <h3 class="mt-2 mb-1">0</h3>
+                                    <p class="text-muted mb-0">Volunteer Hours</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-building text-info" style="font-size: 2rem;"></i>
+                                    <h3 class="mt-2 mb-1">0</h3>
+                                    <p class="text-muted mb-0">Organizations Helped</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-award text-warning" style="font-size: 2rem;"></i>
+                                    <h3 class="mt-2 mb-1">0</h3>
+                                    <p class="text-muted mb-0">Achievements</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {{/if}}
+
 <script src="/js/dashboard.js"></script>

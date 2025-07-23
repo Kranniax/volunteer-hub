@@ -1,20 +1,163 @@
-<a href="/" class="back-button">← Back to Home</a>
-<section class="opportunities-section">
-    <h1>Volunteer Opportunities</h1>
-    {{#if opportunities.length}}
-        <ul class="opportunities-list">
-            {{#each opportunities}}
-                <li class="opportunity-item">
-                    <h2>{{this.title}}</h2>
-                    <p><strong>Organization:</strong> {{this.organization.name}}</p>
-                    <p><strong>Date:</strong> {{this.date}}</p>
-                    <p><strong>Location:</strong> {{this.location}}</p>
-                    <p>{{this.description}}</p>
-                    <a href="/opportunities/{{this.id}}" class="btn btn-secondary">View Details</a>
-                </li>
-            {{/each}}
-        </ul>
-    {{else}}
-        <p>No volunteer opportunities available.</p>
-    {{/if}}
+<!-- Page Header -->
+<section class="bg-light py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="/" class="text-decoration-none">
+                                <i class="bi bi-house me-1"></i>Home
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Opportunities</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Page Title -->
+                <div class="text-center mb-5">
+                    <h1 class="display-5 fw-bold text-primary mb-3">
+                        <i class="bi bi-search me-3"></i>Volunteer Opportunities
+                    </h1>
+                    <p class="lead text-muted">Discover meaningful ways to make a difference in your community</p>
+                </div>
+
+                <!-- Filter/Search Bar (Future Enhancement) -->
+                <div class="row mb-4">
+                    <div class="col-lg-6 mx-auto">
+                        <div class="input-group shadow-sm">
+                            <input type="search" class="form-control form-control-lg"
+                                placeholder="Search opportunities..." aria-label="Search opportunities">
+                            <button class="btn btn-primary" type="button">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Opportunities List -->
+                {{#if opportunities.length}}
+                <div class="row g-4">
+                    {{#each opportunities}}
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-header bg-white border-bottom-0 pb-0">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title mb-1">{{this.title}}</h5>
+                                        <p class="text-muted mb-0">
+                                            <i class="bi bi-building me-1"></i>{{this.organization.name}}
+                                        </p>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill">New</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <p class="card-text text-muted mb-3">{{this.description}}</p>
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col-12">
+                                        <small class="text-muted d-flex align-items-center">
+                                            <i class="bi bi-calendar-event me-2 text-primary"></i>
+                                            <strong>Date:</strong>&nbsp;{{this.date}}
+                                        </small>
+                                    </div>
+                                    <div class="col-12">
+                                        <small class="text-muted d-flex align-items-center">
+                                            <i class="bi bi-geo-alt me-2 text-primary"></i>
+                                            <strong>Location:</strong>&nbsp;{{this.location}}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer bg-white border-top-0 pt-0">
+                                <div class="d-grid">
+                                    <a href="/opportunities/{{this.id}}" class="btn btn-primary">
+                                        <i class="bi bi-eye me-2"></i>View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+
+                <!-- Pagination (Future Enhancement) -->
+                <nav aria-label="Opportunities pagination" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                {{else}}
+                <!-- Empty State -->
+                <div class="text-center py-5">
+                    <div class="mb-4">
+                        <i class="bi bi-search text-muted" style="font-size: 4rem;"></i>
+                    </div>
+                    <h3 class="text-muted mb-3">No Opportunities Available</h3>
+                    <p class="text-muted mb-4">
+                        We don't have any volunteer opportunities available at this time.<br>
+                        Check back soon for new opportunities!
+                    </p>
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                        <a href="/" class="btn btn-primary">
+                            <i class="bi bi-house me-2"></i>Back to Home
+                        </a>
+                        <a href="/about" class="btn btn-outline-primary">
+                            <i class="bi bi-info-circle me-2"></i>Learn More About Us
+                        </a>
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-4">Don't See What You're Looking For?</h2>
+                <p class="lead mb-4">
+                    We're always adding new opportunities. Sign up to get notified when new volunteer positions become
+                    available!
+                </p>
+                <a href="/signup" class="btn btn-light btn-lg">
+                    <i class="bi bi-bell me-2"></i>Get Notifications
+                </a>
+            </div>
+        </div>
+    </div>
 </section>
