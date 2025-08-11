@@ -1,64 +1,341 @@
-<a href="/" class="back-button">← Back to Home</a>
-<section class="opportunity-details">
-    <h1>{{opportunity.title}}</h1>
-    <p><strong>Date:</strong> {{opportunity.date}}</p>
-    <p><strong>Location:</strong> {{opportunity.location}}</p>
-    <p><strong>Description:</strong></p>
-    <p>{{opportunity.description}}</p>
-
-    {{#if opportunity.requirements}}
-        <h3>Requirements</h3>
-        <ul>
-            {{opportunity.requirements}}
-        </ul>
-    {{/if}}
-
-    {{#if opportunity.skills}}
-        <h3>Skills Needed</h3>
-        <ul>
-            {{#each opportunity.skills}}
-                <li>{{this}}</li>
-            {{/each}}
-        </ul>
-    {{/if}}
-    <div class="volunteers-container">
-        <h3>Volunteers</h3>
-        <ul class="volunteer-list">
-            {{#each opportunity.volunteers}}
-            <li class="volunteer-list-item">{{this.firstName}} {{this.lastName}}</li>
-            {{/each}}
-        </ul>
+<!-- Breadcrumb Navigation -->
+<section class="bg-light py-3">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="/" class="text-decoration-none">
+                        <i class="bi bi-house me-1"></i>Home
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/opportunities" class="text-decoration-none">Opportunities</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{opportunity.title}}</li>
+            </ol>
+        </nav>
     </div>
-        
-    <p><strong>Spots Available:</strong> {{opportunity.spotsAvailable}}</p>
-    <p><strong>Spots Filled:</strong> {{opportunity.spotsFilledCount}}</p>
-    {{!-- Check user is logged in --}}
-    {{#if loggedIn}}
-        {{!-- Checks for a volunteer user --}}
-        {{#unless (checkRole loggedInRole)}}
-        {{!-- Check if user is already signed up for this opportunity --}}
-        {{#if (signedUp loggedInUserId opportunity.volunteers)}}
-        <form id="cancel-signup-form" method="DELETE">
-            <button class="cancel-signup" type="submit">Cancel Sign Up</button>
-        </form>
-        {{else}}
-        <form id="signup-form" method="POST">
-            <button class="signup-btn" type="submit">Sign Up</button>
-        </form>
-        {{/if}}
-        {{/unless}}
-
-        {{#if (checkRole loggedInRole)}}
-        <p class="text-muted">Organizations cannot sign up for opportunities.</p>
-        {{/if}}
-    {{else}}
-        <p><a href="/login">Log in</a> to sign up for this opportunity.</p>
-    {{/if}}
 </section>
+
+<!-- Main Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Main Content Column -->
+            <div class="col-lg-8">
+                <!-- Opportunity Header -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h1 class="h2 mb-2 text-primary">{{opportunity.title}}</h1>
+                                <p class="text-muted mb-0">
+                                    <i class="bi bi-building me-2"></i>{{opportunity.organization.name}}
+                                </p>
+                            </div>
+                            <span class="badge bg-primary fs-6 px-3 py-2">
+                                {{#if opportunity.spotsAvailable}}
+                                <i class="bi bi-check-circle me-1"></i>Available
+                                {{else}}
+                                <i class="bi bi-x-circle me-1"></i>Full
+                                {{/if}}
+                            </span>
+                        </div>
+
+                        <!-- Key Details Row -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-6">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                                        <i class="bi bi-calendar-event text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Date</small>
+                                        <span class="fw-semibold">{{opportunity.date}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-success bg-opacity-10 rounded-circle p-2 me-3">
+                                        <i class="bi bi-geo-alt text-success"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Location</small>
+                                        <span class="fw-semibold">{{opportunity.location}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <h4 class="h5 mb-3">
+                                <i class="bi bi-file-text me-2 text-primary"></i>Description
+                            </h4>
+                            <p class="text-muted lh-lg">{{opportunity.description}}</p>
+                        </div>
+
+                        <!-- Requirements -->
+                        {{#if opportunity.requirements}}
+                        <div class="mb-4">
+                            <h4 class="h5 mb-3">
+                                <i class="bi bi-list-check me-2 text-warning"></i>Requirements
+                            </h4>
+                            <div class="bg-warning bg-opacity-10 rounded p-3">
+                                <div class="text-dark">{{opportunity.requirements}}</div>
+                            </div>
+                        </div>
+                        {{/if}}
+
+                        <!-- Skills Needed -->
+                        {{#if opportunity.skills}}
+                        <div class="mb-4">
+                            <h4 class="h5 mb-3">
+                                <i class="bi bi-tools me-2 text-info"></i>Skills Needed
+                            </h4>
+                            <div class="d-flex flex-wrap gap-2">
+                                {{#each opportunity.skills}}
+                                <span class="badge bg-info bg-opacity-10 text-info px-3 py-2">
+                                    <i class="bi bi-check2 me-1"></i>{{this}}
+                                </span>
+                                {{/each}}
+                            </div>
+                        </div>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <!-- Volunteers Section -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h4 class="h5 mb-0">
+                            <i class="bi bi-people me-2 text-primary"></i>Volunteers
+                            <span class="badge bg-secondary ms-2">{{opportunity.volunteers.length}}</span>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        {{#if opportunity.volunteers.length}}
+                        <div class="row g-2">
+                            {{#each opportunity.volunteers}}
+                            <div class="col-sm-6 col-md-4">
+                                <div class="d-flex align-items-center p-2 bg-light rounded">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-2">
+                                        <i class="bi bi-person text-primary"></i>
+                                    </div>
+                                    <span class="fw-semibold">{{this.firstName}} {{this.lastName}}</span>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{else}}
+                        <div class="text-center py-3">
+                            <i class="bi bi-people text-muted" style="font-size: 2.5rem;"></i>
+                            <p class="text-muted mt-2 mb-0">No volunteers signed up yet. Be the first!</p>
+                        </div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Action Card -->
+                <div class="card border-0 shadow-sm mb-4 sticky-top" style="top: 2rem;">
+                    <div class="card-body p-4">
+                        <!-- Availability Info -->
+                        <div class="text-center mb-4">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="bg-primary bg-opacity-10 rounded p-3">
+                                        <div class="h4 mb-1 text-primary">{{opportunity.spotsAvailable}}</div>
+                                        <small class="text-muted">Spots Available</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="bg-success bg-opacity-10 rounded p-3">
+                                        <div class="h4 mb-1 text-success">{{opportunity.spotsFilledCount}}</div>
+                                        <small class="text-muted">Spots Filled</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        {{#if loggedIn}}
+                        {{#unless (checkRole loggedInRole)}}
+                        {{#if (signedUp loggedInUserId opportunity.volunteers)}}
+                        <!-- Cancel Signup -->
+                        <form id="cancel-signup-form" method="DELETE" class="mb-3">
+                            <div class="d-grid">
+                                <button class="btn btn-danger btn-lg" type="submit">
+                                    <i class="bi bi-x-circle me-2"></i>Cancel Sign Up
+                                </button>
+                            </div>
+                        </form>
+                        <div class="alert alert-success d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <small>You're signed up for this opportunity!</small>
+                        </div>
+                        {{else}}
+                        <!-- Sign Up -->
+                        {{#if opportunity.spotsAvailable}}
+                        <form id="signup-form" method="POST" class="mb-3">
+                            <div class="d-grid">
+                                <button class="btn btn-primary btn-lg signup-btn" type="submit">
+                                    <i class="bi bi-person-plus me-2"></i>Sign Up Now
+                                </button>
+                            </div>
+                        </form>
+                        {{else}}
+                        <div class="d-grid mb-3">
+                            <button class="btn btn-outline-secondary btn-lg" disabled>
+                                <i class="bi bi-x-circle me-2"></i>Opportunity Full
+                            </button>
+                        </div>
+                        {{/if}}
+                        {{/if}}
+                        {{/unless}}
+
+                        {{#if (checkRole loggedInRole)}}
+                        <div class="alert alert-info d-flex align-items-center">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <small>Organizations cannot sign up for opportunities.</small>
+                        </div>
+                        {{/if}}
+                        {{else}}
+                        <!-- Not Logged In -->
+                        <div class="d-grid mb-3">
+                            <a href="/login" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Log In to Sign Up
+                            </a>
+                        </div>
+                        <div class="text-center">
+                            <small class="text-muted">
+                                Don't have an account?
+                                <a href="/signup" class="text-decoration-none">Sign up here</a>
+                            </small>
+                        </div>
+                        {{/if}}
+
+                        <!-- Share Options -->
+                        <hr class="my-4">
+                        <div class="text-center">
+                            <h6 class="mb-3">Share This Opportunity</h6>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="shareOpportunity('facebook')">
+                                    <i class="bi bi-facebook"></i>
+                                </button>
+                                <button class="btn btn-outline-info btn-sm" onclick="shareOpportunity('twitter')">
+                                    <i class="bi bi-twitter"></i>
+                                </button>
+                                <button class="btn btn-outline-success btn-sm" onclick="shareOpportunity('whatsapp')">
+                                    <i class="bi bi-whatsapp"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="copyToClipboard()">
+                                    <i class="bi bi-link-45deg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info Card -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h6 class="mb-0">
+                            <i class="bi bi-envelope me-2 text-primary"></i>Questions?
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">Contact the organization directly:</p>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-building me-2 text-muted"></i>
+                            <span class="fw-semibold">{{opportunity.organization.name}}</span>
+                        </div>
+                        <div class="mt-2">
+                            <a href="mailto:{{opportunity.organization.email}}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-envelope me-1"></i>Send Email
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Scripts -->
 {{#if loggedIn}}
-    {{#if (signedUp loggedInUserId opportunity.volunteers)}}
-        <script src="/js/cancel-signup.js"></script>
-    {{else}}   
-        <script src="/js/volunteer-signup.js"></script>
-    {{/if}}
+{{#if (signedUp loggedInUserId opportunity.volunteers)}}
+<script src="/js/cancel-signup.js"></script>
+{{else}}
+<script src="/js/volunteer-signup.js"></script>
 {{/if}}
+{{/if}}
+
+<script>
+    // Share functionality
+    function shareOpportunity(platform) {
+        const url = encodeURIComponent(window.location.href);
+        const title = encodeURIComponent('{{opportunity.title}} - Volunteer Opportunity');
+        const text = encodeURIComponent('Check out this volunteer opportunity: {{opportunity.title}}');
+
+        let shareUrl;
+
+        switch (platform) {
+            case 'facebook':
+                shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                break;
+            case 'twitter':
+                shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+                break;
+            case 'whatsapp':
+                shareUrl = `https://wa.me/?text=${text}%20${url}`;
+                break;
+        }
+
+        if (shareUrl) {
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        }
+    }
+
+    // Copy to clipboard
+    function copyToClipboard() {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            // Show temporary success message
+            const button = event.target;
+            const originalContent = button.innerHTML;
+            button.innerHTML = '<i class="bi bi-check"></i>';
+            button.classList.remove('btn-outline-secondary');
+            button.classList.add('btn-success');
+
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-outline-secondary');
+            }, 2000);
+        });
+    }
+
+    // Loading state for forms
+    document.addEventListener('DOMContentLoaded', function () {
+        const forms = document.querySelectorAll('form[id$="-form"]');
+        forms.forEach(form => {
+            form.addEventListener('submit', function () {
+                const button = this.querySelector('button[type="submit"]');
+                if (button) {
+                    button.disabled = true;
+                    const originalContent = button.innerHTML;
+                    button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+
+                    // Re-enable after 5 seconds as fallback
+                    setTimeout(() => {
+                        button.disabled = false;
+                        button.innerHTML = originalContent;
+                    }, 5000);
+                }
+            });
+        });
+    });
+</script>
