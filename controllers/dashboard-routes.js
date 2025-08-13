@@ -132,7 +132,7 @@ router.get("/edit-volunteer-profile", withAuth, async (req, res) => {
   }
 });
 // edit a organization profile
-router.get("/edit-organization-profile", withAuth,  async (req, res) => {
+router.get("/edit-organization-profile", withAuth, async (req, res) => {
   try {
     const profileResponse = await Organization.findOne({
       where: {
@@ -155,7 +155,28 @@ router.get("/edit-organization-profile", withAuth,  async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+// edit a opportunity
+router.get("/opportunities/:id", withAuth, async (req, res) => {
+  try {
+    const opportunityResponse = await Opportunity.findByPk(req.params.id);
 
+    if (!opportunityResponse) {
+      res
+        .status(404)
+        .json({ message: "Cannot locate opportunity with this id" });
+      return;
+    }
+    // Serialize data before render to page.
+    const opportunity = opportunityResponse.get({ plain: true });
+
+    res.render("edit-opportunity", {
+      opportunity,
+      loggedIn: req.session.loggedIn,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // post a new volunteer
 router.get("/opportunities/new", withAuth, async (req, res) => {
   if (req.session.role !== "organization") {
