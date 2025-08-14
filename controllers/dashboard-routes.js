@@ -155,6 +155,20 @@ router.get("/edit-organization-profile", withAuth, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// post a new volunteer
+router.get("/opportunities/new", withAuth, async (req, res) => {
+  if (req.session.role !== "organization") {
+    return res
+      .status(403)
+      .json({ message: "Only organizations can create opportunities." });
+  }
+  res.render("new-opportunity", {
+    loggedIn: req.session.loggedIn,
+    role: req.session.role,
+  });
+});
+
 // edit a opportunity
 router.get("/opportunities/:id", withAuth, async (req, res) => {
   try {
@@ -176,18 +190,6 @@ router.get("/opportunities/:id", withAuth, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
-// post a new volunteer
-router.get("/opportunities/new", withAuth, async (req, res) => {
-  if (req.session.role !== "organization") {
-    return res
-      .status(403)
-      .json({ message: "Only organizations can create opportunities." });
-  }
-  res.render("new-opportunity", {
-    loggedIn: req.session.loggedIn,
-    role: req.session.role,
-  });
 });
 
 export default router;
