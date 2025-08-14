@@ -27,7 +27,7 @@ router.get("/", withAuth, async (req, res) => {
               {
                 model: Opportunity,
                 through: Signup, // hides join table fields if you want
-                //   order: [["createdAt", "DESC"]],
+                // order: [["createdAt", "DESC"]],
                 attributes: [
                   "id",
                   "organization_id",
@@ -45,6 +45,14 @@ router.get("/", withAuth, async (req, res) => {
               },
             ],
           },
+        ],
+        order: [
+          [
+            { model: Volunteer, as: "volunteerProfile" },
+            { model: Opportunity, as: "opportunities" },
+            "createdAt",
+            "DESC",
+          ],
         ],
       });
       if (!profileResponse) {
