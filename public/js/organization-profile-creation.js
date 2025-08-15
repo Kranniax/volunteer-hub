@@ -30,7 +30,7 @@ var organizationProfileFormHandler = async function (event) {
   // Check for required fields
   if (name && description) {
     try {
-      const response = await fetch("http://localhost:3001/api/organizations/", {
+      const response = await fetch("/api/organizations/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

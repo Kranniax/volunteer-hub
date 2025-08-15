@@ -33,7 +33,7 @@ const editOrgHandler = async function (event) {
   if (name && description) {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/organizations/${organizationID}`,
+        `/api/organizations/${organizationID}`,
         {
           method: "PUT",
           headers: {

@@ -33,7 +33,7 @@ var volunteerProfileFormHandler = async function (event) {
   // Check for any blank input fields.
   if (firstName && lastName && dateOfBirth && address) {
     try {
-      const response = await fetch("http://localhost:3001/api/volunteers/", {
+      const response = await fetch("/api/volunteers/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

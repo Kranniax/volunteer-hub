@@ -10,9 +10,9 @@ var volunteerSignupHandler = async function (event) {
   event.preventDefault();
   // Disable button when pressed to prevent double submissions
   signupButton.disabled = true;
-  const profileEndpoint = "http://localhost:3001/api/users/profile";
-  const signupEndpoint = "http://localhost:3001/api/signups";
-  const opportunityEndpoint = `http://localhost:3001/api/opportunities/${opportunityId}`;
+  const profileEndpoint = "/api/users/profile";
+  const signupEndpoint = "/api/signups";
+  const opportunityEndpoint = `/api/opportunities/${opportunityId}`;
 
   try {
     // Fetch volunteer profile id for the current user

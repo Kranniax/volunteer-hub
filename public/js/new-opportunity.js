@@ -2,8 +2,8 @@ const newOpportunityForm = document.querySelector(".new-opportunity-form");
 
 const newOpportunityHandler = async (event) => {
   event.preventDefault();
-  const opportunityEndPoint = "http://localhost:3001/api/opportunities/";
-  const profileEndpoint = "http://localhost:3001/api/users/profile";
+  const opportunityEndPoint = "/api/opportunities/";
+  const profileEndpoint = "/api/users/profile";
 
   // Get form values
   const title = document.querySelector("#title").value.trim();

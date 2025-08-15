@@ -41,7 +41,7 @@ var editProfileHandler = async function (event) {
   if (firstName && lastName && dateOfBirth && address) {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/volunteers/${volunteerID}`,
+        `/api/volunteers/${volunteerID}`,
         {
           method: "PUT",
           headers: {

@@ -31,7 +31,7 @@ const editOpportunityHandler = async function (event) {
   if (title && description && requirements && date && location && startTime && endTime && status) {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/opportunities/${opportunityID}`,
+        `/api/opportunities/${opportunityID}`,
         {
           method: "PUT",
           headers: {
