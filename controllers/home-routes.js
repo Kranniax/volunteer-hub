@@ -61,6 +61,11 @@ router.get("/opportunities/:id", async (req, res) => {
           model: Volunteer,
           through: Signup,
         },
+        {
+          model: Organization,
+          as: "organization",
+          attributes: ["name"],
+        },
       ],
     });
 
@@ -71,6 +76,8 @@ router.get("/opportunities/:id", async (req, res) => {
       return;
     }
     const opportunity = dbOpportunityData.get({ plain: true });
+    // console.log(opportunity);
+    
     res.render("single-opportunity", {
       opportunity,
       loggedIn: req.session.loggedIn,
