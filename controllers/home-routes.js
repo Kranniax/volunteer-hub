@@ -64,7 +64,7 @@ router.get("/opportunities/:id", async (req, res) => {
         {
           model: Organization,
           as: "organization",
-          attributes: ["name"],
+          attributes: ["name", "phone"],
         },
       ],
     });
